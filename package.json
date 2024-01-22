@@ -7,7 +7,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "clean": "rimraf dist ./*.zip ./*.crx ./*.pem",
+    "clean": "rimraf --glob dist ./*.zip ./*.crx ./*.pem",
     "dev": "vite",
     "build:firefox": "NODE_ENV=production run-s clean compile build:firefox:*",
     "build:firefox:manifest": "mv dist/manifestv2.json dist/manifest.json",
