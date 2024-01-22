@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  h1 {
-      @apply text-slate-700 text-xl
-  }
+    h1 {
+        @apply text-slate-700 text-xl;
+    }
 }

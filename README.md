@@ -4,11 +4,12 @@
 
 A browser web extension that works on Chrome, Firefox and Safari. Download the extension on the marketplaces:
 
-- Chrome:: https://chrome.google.com/webstore/detail/my-web-extension/lnihnbkolojkaehnkdmpliededkfebkk
-- Firefox: https://addons.mozilla.org/en-GB/firefox/addon/my-web-extension/
-- Safari: _(not yet supported, see [`stateful/web-extension-starter-kit#1`](https://github.com/stateful/web-extension-starter-kit/issues/1))_
+-   Chrome:: https://chrome.google.com/webstore/detail/my-web-extension/lnihnbkolojkaehnkdmpliededkfebkk
+-   Firefox: https://addons.mozilla.org/en-GB/firefox/addon/my-web-extension/
+-   Safari: _(not yet supported, see [`stateful/web-extension-starter-kit#1`](https://github.com/stateful/web-extension-starter-kit/issues/1))_
 
 ## Development
+
 ### Setup
 
 Install dependencies via:
@@ -69,8 +70,8 @@ npm run test:e2e
 
 ## Files:
 
- - content-script - UI files
- - background.ts - Background script/Service worker
- - index.html - popup UI
+-   content-script - UI files
+-   background.ts - Background script/Service worker
+-   index.html - popup UI
 
 If you have any questions feel free to open an issue.
