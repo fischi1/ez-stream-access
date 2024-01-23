@@ -18,12 +18,13 @@
       "strict_min_version": "100.0"
     }
   },
-  "permissions": [],
+  "permissions": ["identity"],
   "icons": {
     "72": "icon-72x72.png",
     "96": "icon-96x96.png",
     "128": "icon-128x128.png",
     "144": "icon-144x144.png",
     "152": "icon-152x152.png"
-  }
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs8MQuQdRrcmVbO/jyCyO2mGD8HR9BQSoxtIMvs1dvkM0XDxVfcvqr/NTxbPER/VJBXd3Le0dSVl4dQAMyuASXGeMQreSyi+c172niUrduxW3Pwu9lX3nGgalZzpwhlbH2acNf/vgLiBke7gGmaeN2Cv3OlKGP9EgwV3IxNHkUmL4/7lt1qluJHRPVVYo5e18o1wQ0VbVh4XLgLFbgdGjVPoUOq/X02MJAwn2QgV8RYSCC39RhGRb6ksJ0Cgb2+ZRPNB0H1oZVrnHpPsoD2egE8bHy26Vv+Xd9G5xu18Rc/7cadsvp1KJ8ZHf6ify0ctjeauzoksncmbR2b9ZhQRhqwIDAQAB"
 }
