@@ -1,5 +1,6 @@
 import browser from "webextension-polyfill"
-import { ResponseCallback } from "."
+import { DispatchFunction, GetStateFunction, UpdateStateFunction } from ".."
+import { getUser } from "../api/user"
 
 const DEBUG_CALLBACK_URL: string | undefined =
     "https://jcalgidillanaopifkinicgeiiomeilh.chromiumapp.org/#access_token=blc0gvw617gpgkv2xnjoi1ph4fy59w&scope=user:read:follows&state=c3ab8aa609ea11e793ae92361f002671&token_type=bearer"
@@ -10,8 +11,12 @@ const getTwitchLoginUrl = () => {
 
 const urlRegex = /^https:\/\/.*#(.*=.*&*)$/
 
-const startLoginFlow = async (callback: ResponseCallback) => {
-    callback((oldState) => ({
+const startLoginFlow = async (
+    updateState: UpdateStateFunction,
+    getState: GetStateFunction,
+    dispatch: DispatchFunction
+) => {
+    updateState((oldState) => ({
         ...oldState,
         ...{ loggedInState: { status: "IN_PROGRESS" } }
     }))
@@ -35,7 +40,7 @@ const startLoginFlow = async (callback: ResponseCallback) => {
         !url.includes("access_token=") ||
         !url.includes("state=")
     ) {
-        callback((oldState) => ({
+        updateState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
         }))
@@ -46,7 +51,7 @@ const startLoginFlow = async (callback: ResponseCallback) => {
     const urlSearchParams = new URLSearchParams(url.split("#")[1])
 
     if (state !== urlSearchParams.get("state")) {
-        callback((oldState) => ({
+        updateState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
         }))
@@ -56,10 +61,34 @@ const startLoginFlow = async (callback: ResponseCallback) => {
 
     const accessToken = urlSearchParams.get("access_token")!
 
-    callback((oldState) => ({
+    const userData = await getUser(accessToken)
+
+    const loggedInUser = userData.data?.[0]
+
+    if (!loggedInUser) {
+        updateState((oldState) => ({
+            ...oldState,
+            ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
+        }))
+        // TODO error
+        return
+    }
+
+    updateState((oldState) => ({
         ...oldState,
-        ...{ loggedInState: { status: "LOGGED_IN", accessToken: accessToken } }
+        ...{
+            loggedInState: {
+                status: "LOGGED_IN",
+                accessToken: accessToken,
+                displayName: loggedInUser.display_name,
+                login: loggedInUser.login,
+                id: loggedInUser.id,
+                profileImageUrl: loggedInUser.profile_image_url
+            }
+        }
     }))
+
+    dispatch({ action: "fetchStreams" })
 }
 
 export { startLoginFlow }
