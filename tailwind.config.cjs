@@ -8,6 +8,15 @@ module.exports = {
     theme: {
         container: {
             padding: "2rem"
+        },
+        colors: {
+            background: "#0e0e10"
+        },
+        extend: {
+            colors: {
+                typography: "#efeff1",
+                lightBackground: "#2f2f35"
+            }
         }
     }
 }
