@@ -13,6 +13,26 @@ type Message =
       }
     | { action: "fetchStreams" }
 
+export type User = {
+    accessToken: string
+    login: string
+    displayName: string
+    id: string
+    profileImageUrl: string
+}
+
+export type Stream = {
+    login: string
+    displayName: string
+    gameId: string
+    gameName: string
+    type: string
+    title: string
+    viewerCount: number
+    startedAt: string
+    thumbnailUrl: string
+}
+
 export type State = {
     loggedInState:
         | {
@@ -21,14 +41,10 @@ export type State = {
         | {
               status: "IN_PROGRESS"
           }
-        | {
+        | ({
               status: "LOGGED_IN"
-              accessToken: string
-              login: string
-              displayName: string
-              id: string
-              profileImageUrl: string
-          }
+          } & User)
+    streams: Stream[]
 }
 
 export type UpdateStateFunction = (
@@ -40,7 +56,8 @@ export type DispatchFunction = (message: Message) => void
 export type GetStateFunction = () => State
 
 const initialState: State = {
-    loggedInState: { status: "NOT_LOGGED_IN" }
+    loggedInState: { status: "NOT_LOGGED_IN" },
+    streams: []
 }
 
 let stateHolder = { state: initialState }
