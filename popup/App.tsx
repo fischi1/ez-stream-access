@@ -9,9 +9,8 @@ const App = () => {
     }
 
     return (
-        <div className="bg-background px-2">
-            <StateContext>
-                <h1 className="text-xl">Cat Facts in the popup!</h1>
+        <StateContext>
+            <div className="bg-background px-2">
                 <div>
                     <button
                         className="text-typography"
@@ -21,8 +20,8 @@ const App = () => {
                     </button>
                 </div>
                 <StreamList />
-            </StateContext>
-        </div>
+            </div>
+        </StateContext>
     )
 }
 

@@ -11,7 +11,7 @@ const StreamCard = ({ stream }: Props) => {
         .replace("{height}", "225")
 
     return (
-        <button className="text-left flex-[1_0_40%] self-baseline">
+        <button className="text-left flex-[1_0_40%] self-start">
             <div className="w-full aspect-video bg-lightBackground relative">
                 <img
                     src={thumbnailUrl}
@@ -23,12 +23,16 @@ const StreamCard = ({ stream }: Props) => {
                 </div>
             </div>
             <div className="flex">
-                <div className="p-2">
-                    <img
-                        src="todo"
-                        alt={stream.displayName}
-                        className="w-9 aspect-square bg-lightBackground rounded-full"
-                    />
+                <div className="p-2 flex-grow-0 flex-shrink-0">
+                    {stream.profileImageUrl ? (
+                        <img
+                            src={stream.profileImageUrl}
+                            alt={stream.displayName}
+                            className="w-9 aspect-square bg-lightBackground rounded-full"
+                        />
+                    ) : (
+                        <div className="w-9 aspect-square bg-lightBackground rounded-full" />
+                    )}
                 </div>
                 <div>
                     <div className="text-base">{stream.title}</div>

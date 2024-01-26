@@ -31,6 +31,7 @@ export type Stream = {
     viewerCount: number
     startedAt: string
     thumbnailUrl: string
+    profileImageUrl: string | undefined
 }
 
 export type State = {

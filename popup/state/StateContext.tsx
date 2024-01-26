@@ -23,7 +23,7 @@ const StateContext = ({ children }: Props) => {
     return (
         <context.Provider value={state}>
             {children}
-            <p className="whitespace-break-spaces font-mono py-4">
+            <p className="whitespace-break-spaces font-mono py-4 text-background">
                 {JSON.stringify(state, null, 4)}
             </p>
         </context.Provider>

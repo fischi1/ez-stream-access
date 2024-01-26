@@ -5,6 +5,7 @@ import {
     UpdateStateFunction
 } from ".."
 import { getStreamsFollowed } from "../api/streamsFollowed"
+import { getUser } from "../api/user"
 
 const getTwitchContent = async (
     updateState: UpdateStateFunction,
@@ -31,10 +32,29 @@ const getTwitchContent = async (
         thumbnailUrl: stream.thumbnail_url,
         title: stream.title,
         type: stream.type,
-        viewerCount: stream.viewer_count
+        viewerCount: stream.viewer_count,
+        profileImageUrl: undefined
     }))
 
     updateState((oldState) => ({ ...oldState, ...{ streams: streams } }))
+
+    const streamerInfo = await getUser(
+        state.loggedInState.accessToken,
+        getState().streams.map((stream) => stream.login)
+    )
+
+    updateState((oldState) => {
+        const newStreams = oldState.streams.map((stream) => {
+            return {
+                ...stream,
+                profileImageUrl: streamerInfo.data.find(
+                    (streamer) => streamer.login === stream.login
+                )?.profile_image_url
+            }
+        })
+
+        return { ...oldState, ...{ streams: newStreams } }
+    })
 }
 
 export { getTwitchContent }

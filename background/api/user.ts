@@ -15,8 +15,11 @@ type UserData = {
 
 type Response = { data: UserData[] }
 
-const getUser = async (accessToken: string): Promise<Response> => {
-    const response = await fetch("https://api.twitch.tv/helix/users", {
+const getUser = async (
+    accessToken: string,
+    logins?: string[]
+): Promise<Response> => {
+    const response = await fetch(getUrl(logins), {
         headers: {
             Authorization: `Bearer ${accessToken}`,
             "Client-Id": CLIENT_ID
@@ -28,6 +31,19 @@ const getUser = async (accessToken: string): Promise<Response> => {
     }
 
     return await response.json()
+}
+
+const getUrl = (logins: string[] | undefined) => {
+    const url = "https://api.twitch.tv/helix/users"
+
+    if (logins && logins.length > 0) {
+        const urlSearchParams = new URLSearchParams()
+        logins.forEach((login) => urlSearchParams.append("login", login))
+
+        return `${url}?${urlSearchParams}`
+    }
+
+    return url
 }
 
 export { getUser }
