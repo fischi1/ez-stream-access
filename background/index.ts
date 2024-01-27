@@ -1,51 +1,29 @@
 import browser from "webextension-polyfill"
-import { startLoginFlow } from "./reducers/login"
-import { getTwitchContent } from "./reducers/getTwitchContent"
+import { startLoginFlow } from "./actions/login"
+import { getTwitchContent } from "./actions/getTwitchContent"
+import handleClick from "./actions/clickHandling"
+import { State } from "./types/State"
 
 export const CLIENT_ID = "39df8lhu3w5wmz3ufzxf2cfz2ff0ht"
 
-/**
- * action and data
- */
-type Message =
+export type Message =
     | {
           action: "login"
+          data: undefined
       }
-    | { action: "fetchStreams" }
+    | {
+          action: "fetchStreams"
+          data: undefined
+      }
+    | {
+          action: "click"
+          data: ClickData
+      }
 
-export type User = {
-    accessToken: string
-    login: string
-    displayName: string
-    id: string
-    profileImageUrl: string
-}
-
-export type Stream = {
-    login: string
-    displayName: string
-    gameId: string
-    gameName: string
-    type: string
-    title: string
-    viewerCount: number
-    startedAt: string
-    thumbnailUrl: string
-    profileImageUrl: string | undefined
-}
-
-export type State = {
-    loggedInState:
-        | {
-              status: "NOT_LOGGED_IN"
-          }
-        | {
-              status: "IN_PROGRESS"
-          }
-        | ({
-              status: "LOGGED_IN"
-          } & User)
-    streams: Stream[]
+export type ClickData = {
+    streamLogin: string
+    clickedItem: "thumbnail" | "title" | "name" | "gameName" | "profileImage"
+    targetBlank: boolean
 }
 
 export type UpdateStateFunction = (
@@ -65,13 +43,15 @@ let stateHolder = { state: initialState }
 
 let port: browser.Runtime.Port
 
-const handleAction: DispatchFunction = async ({ action }: Message) => {
+const handleAction: DispatchFunction = async ({ action, data }: Message) => {
     const handleStateUpdate: UpdateStateFunction = (stateUpdate) => {
         stateHolder.state = stateUpdate(stateHolder.state)
-        port?.postMessage({ state: stateHolder.state })
+        port?.postMessage({ action: "stateUpdate", state: stateHolder.state })
     }
 
     const getState: GetStateFunction = () => stateHolder.state
+
+    const closePopup = () => port?.postMessage({ action: "close" })
 
     switch (action) {
         case "login":
@@ -80,6 +60,8 @@ const handleAction: DispatchFunction = async ({ action }: Message) => {
         case "fetchStreams":
             getTwitchContent(handleStateUpdate, getState, handleAction)
             break
+        case "click":
+            handleClick(data, handleStateUpdate, getState, handleAction, closePopup)
         default:
             console.error("unknown action")
     }
@@ -93,5 +75,5 @@ browser.runtime.onMessage.addListener((msg) => {
 browser.runtime.onConnect.addListener((p) => {
     console.assert(p.name === "twitch-web-extension")
     port = p
-    p.postMessage({ state: stateHolder.state })
+    p.postMessage({ action: "stateUpdate", state: stateHolder.state })
 })

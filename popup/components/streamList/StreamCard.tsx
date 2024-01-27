@@ -1,5 +1,7 @@
 import React from "react"
-import { Stream } from "../../../background"
+import { Stream } from "../../../background/types/State"
+import browser from "webextension-polyfill"
+import { Message } from "../../../background"
 
 type Props = {
     stream: Stream
@@ -10,9 +12,40 @@ const StreamCard = ({ stream }: Props) => {
         .replace("{width}", "400")
         .replace("{height}", "225")
 
+    const handleClick = (
+        e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+        clickedItem:
+            | "thumbnail"
+            | "title"
+            | "name"
+            | "gameName"
+            | "profileImage"
+    ) => {
+        if (e.button > 1) {
+            return
+        }
+        e.preventDefault()
+        const isNewTab = e.getModifierState("Control") || e.button === 1
+
+        const message: Message = {
+            action: "click",
+            data: {
+                clickedItem: clickedItem,
+                streamLogin: stream.login,
+                targetBlank: isNewTab
+            }
+        }
+        browser.runtime.sendMessage(message)
+    }
+
     return (
-        <button className="text-left flex-[1_0_40%] self-start">
-            <div className="w-full aspect-video bg-lightBackground relative">
+        <div className="text-left flex-[1_0_40%] self-start">
+            <a
+                href="#"
+                onClick={(e) => handleClick(e, "thumbnail")}
+                onAuxClick={(e) => handleClick(e, "thumbnail")}
+                className="block w-full aspect-video bg-lightBackground relative"
+            >
                 <img
                     src={thumbnailUrl}
                     alt={`Stream preview thumbnail of ${stream.displayName}`}
@@ -21,26 +54,52 @@ const StreamCard = ({ stream }: Props) => {
                 <div className="absolute left-[4px] bottom-[4px] bg-background/80 rounded px-1">
                     {stream.viewerCount}
                 </div>
-            </div>
-            <div className="flex">
-                <div className="p-2 flex-grow-0 flex-shrink-0">
+            </a>
+            <div className="flex mt-1">
+                <a
+                    href="#"
+                    onClick={(e) => handleClick(e, "profileImage")}
+                    onAuxClick={(e) => handleClick(e, "profileImage")}
+                    className="block p-2 flex-grow-0 flex-shrink-0"
+                >
                     {stream.profileImageUrl ? (
                         <img
                             src={stream.profileImageUrl}
                             alt={stream.displayName}
-                            className="w-9 aspect-square bg-lightBackground rounded-full"
+                            className="w-9 aspect-square rounded-full"
                         />
                     ) : (
                         <div className="w-9 aspect-square bg-lightBackground rounded-full" />
                     )}
-                </div>
+                </a>
                 <div>
-                    <div className="text-base">{stream.title}</div>
-                    <div>{stream.displayName}</div>
-                    <div>{stream.gameName}</div>
+                    <a
+                        href="#"
+                        onClick={(e) => handleClick(e, "title")}
+                        onAuxClick={(e) => handleClick(e, "title")}
+                        className="text-base block"
+                    >
+                        {stream.title}
+                    </a>
+                    <a
+                        href="#"
+                        onClick={(e) => handleClick(e, "name")}
+                        onAuxClick={(e) => handleClick(e, "name")}
+                        className="block"
+                    >
+                        {stream.displayName}
+                    </a>
+                    <a
+                        href="#"
+                        onClick={(e) => handleClick(e, "gameName")}
+                        onAuxClick={(e) => handleClick(e, "gameName")}
+                        className="block"
+                    >
+                        {stream.gameName}
+                    </a>
                 </div>
             </div>
-        </button>
+        </div>
     )
 }
 

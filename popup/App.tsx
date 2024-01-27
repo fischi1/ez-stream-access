@@ -2,10 +2,11 @@ import React from "react"
 import browser from "webextension-polyfill"
 import { StateContext } from "./state/StateContext"
 import StreamList from "./components/streamList/StreamList"
+import { Message } from "../background"
 
 const App = () => {
     const handleLoginClick = async () => {
-        browser.runtime.sendMessage({ action: "login" })
+        browser.runtime.sendMessage({ action: "login" } as Message)
     }
 
     return (

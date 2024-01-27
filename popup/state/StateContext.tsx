@@ -6,7 +6,7 @@ import React, {
     useState
 } from "react"
 import browser from "webextension-polyfill"
-import { State } from "../../background"
+import { State } from "../../background/types/State"
 
 type Props = { children: ReactNode }
 
@@ -17,7 +17,16 @@ const StateContext = ({ children }: Props) => {
 
     useEffect(() => {
         var port = browser.runtime.connect({ name: "twitch-web-extension" })
-        port.onMessage.addListener(({ state }) => setState(state))
+        port.onMessage.addListener(({ action, state }) => {
+            switch (action) {
+                case "stateUpdate":
+                    setState(state)
+                    break
+                case "close":
+                    window.close()
+                    break
+            }
+        })
     }, [])
 
     return (

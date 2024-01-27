@@ -16,6 +16,11 @@ const StreamList = ({}: Props) => {
             {state.streams.map((stream) => (
                 <StreamCard key={stream.login} stream={stream} />
             ))}
+            {state.streams.length % 2 === 1 && (
+                <div className="text-left flex-[1_0_40%] self-start">
+                    &nbsp;
+                </div>
+            )}
         </div>
     )
 }

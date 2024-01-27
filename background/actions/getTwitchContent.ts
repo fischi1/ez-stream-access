@@ -1,9 +1,9 @@
 import {
     DispatchFunction,
     GetStateFunction,
-    Stream,
     UpdateStateFunction
 } from ".."
+import { Stream } from "../types/State"
 import { getStreamsFollowed } from "../api/streamsFollowed"
 import { getUser } from "../api/user"
 
