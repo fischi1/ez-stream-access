@@ -18,7 +18,10 @@
       "strict_min_version": "100.0"
     }
   },
-  "permissions": ["identity"],
+  "permissions": [
+    "identity",
+    "storage"
+  ],
   "icons": {
     "72": "icon-72x72.png",
     "96": "icon-96x96.png",

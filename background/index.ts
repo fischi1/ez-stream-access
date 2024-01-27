@@ -43,10 +43,17 @@ let stateHolder = { state: initialState }
 
 let port: browser.Runtime.Port
 
+browser.storage.local.get("data").then((result) => {
+    if (result?.data) {
+        stateHolder.state = result.data
+    }
+})
+
 const handleAction: DispatchFunction = async ({ action, data }: Message) => {
     const handleStateUpdate: UpdateStateFunction = (stateUpdate) => {
         stateHolder.state = stateUpdate(stateHolder.state)
         port?.postMessage({ action: "stateUpdate", state: stateHolder.state })
+        browser.storage.local.set({ data: stateHolder.state })
     }
 
     const getState: GetStateFunction = () => stateHolder.state
@@ -61,7 +68,13 @@ const handleAction: DispatchFunction = async ({ action, data }: Message) => {
             getTwitchContent(handleStateUpdate, getState, handleAction)
             break
         case "click":
-            handleClick(data, handleStateUpdate, getState, handleAction, closePopup)
+            handleClick(
+                data,
+                handleStateUpdate,
+                getState,
+                handleAction,
+                closePopup
+            )
         default:
             console.error("unknown action")
     }
