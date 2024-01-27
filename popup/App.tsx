@@ -9,6 +9,10 @@ const App = () => {
         browser.runtime.sendMessage({ action: "login" } as Message)
     }
 
+    const handleLogoutClick = async () => {
+        browser.runtime.sendMessage({ action: "logout" } as Message)
+    }
+
     return (
         <StateContext>
             <div className="bg-background px-2">
@@ -18,6 +22,14 @@ const App = () => {
                         onClick={handleLoginClick}
                     >
                         Login
+                    </button>
+                </div>
+                <div>
+                    <button
+                        className="text-typography"
+                        onClick={handleLogoutClick}
+                    >
+                        Logout
                     </button>
                 </div>
                 <StreamList />

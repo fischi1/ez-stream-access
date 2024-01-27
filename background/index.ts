@@ -12,6 +12,10 @@ export type Message =
           data: undefined
       }
     | {
+          action: "logout"
+          data: undefined
+      }
+    | {
           action: "fetchStreams"
           data: undefined
       }
@@ -63,6 +67,12 @@ const handleAction: DispatchFunction = async ({ action, data }: Message) => {
     switch (action) {
         case "login":
             startLoginFlow(handleStateUpdate, getState, handleAction)
+            break
+        case "logout":
+            stateHolder = { state: initialState }
+            handleStateUpdate(() => {
+                return stateHolder.state
+            })
             break
         case "fetchStreams":
             getTwitchContent(handleStateUpdate, getState, handleAction)
