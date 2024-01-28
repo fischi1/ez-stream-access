@@ -40,7 +40,7 @@ export type GetStateFunction = () => State
 
 const initialState: State = {
     loggedInState: { status: "NOT_LOGGED_IN" },
-    streams: []
+    streamState: { status: "IDLE", streams: [] }
 }
 
 let stateHolder = { state: initialState }

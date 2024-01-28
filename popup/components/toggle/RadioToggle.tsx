@@ -1,6 +1,9 @@
 import React from "react"
 
-type Props = { value: string; name: string }
+type Props = {
+    value: string
+    name: string
+}
 
 const RadioToggle = ({ value, name }: Props) => {
     return (

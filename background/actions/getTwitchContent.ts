@@ -1,8 +1,4 @@
-import {
-    DispatchFunction,
-    GetStateFunction,
-    UpdateStateFunction
-} from ".."
+import { DispatchFunction, GetStateFunction, UpdateStateFunction } from ".."
 import { Stream } from "../types/State"
 import { getStreamsFollowed } from "../api/streamsFollowed"
 import { getUser } from "../api/user"
@@ -14,9 +10,17 @@ const getTwitchContent = async (
 ) => {
     const state = getState()
 
-    if (state.loggedInState.status !== "LOGGED_IN") {
+    if (
+        state.loggedInState.status !== "LOGGED_IN" ||
+        state.streamState.status !== "IDLE"
+    ) {
         return
     }
+
+    updateState((oldState) => ({
+        ...oldState,
+        ...{ streamState: { ...oldState.streamState, status: "FETCHING" } }
+    }))
 
     const streamData = await getStreamsFollowed(
         state.loggedInState.id,
@@ -36,15 +40,18 @@ const getTwitchContent = async (
         profileImageUrl: undefined
     }))
 
-    updateState((oldState) => ({ ...oldState, ...{ streams: streams } }))
+    updateState((oldState) => ({
+        ...oldState,
+        ...{ streamState: { ...oldState.streamState, streams: streams } }
+    }))
 
     const streamerInfo = await getUser(
         state.loggedInState.accessToken,
-        getState().streams.map((stream) => stream.login)
+        getState().streamState.streams.map((stream) => stream.login)
     )
 
     updateState((oldState) => {
-        const newStreams = oldState.streams.map((stream) => {
+        const newStreams = oldState.streamState.streams.map((stream) => {
             return {
                 ...stream,
                 profileImageUrl: streamerInfo.data.find(
@@ -53,7 +60,16 @@ const getTwitchContent = async (
             }
         })
 
-        return { ...oldState, ...{ streams: newStreams } }
+        return {
+            ...oldState,
+            ...{
+                streamState: {
+                    ...oldState.streamState,
+                    streams: newStreams,
+                    status: "IDLE"
+                }
+            }
+        }
     })
 }
 

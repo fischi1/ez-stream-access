@@ -30,7 +30,7 @@ const handleClick = (
     dispatch: DispatchFunction,
     closePopup: () => void
 ) => {
-    const stream = getState().streams.find(
+    const stream = getState().streamState.streams.find(
         (stream) => stream.login === data.streamLogin
     )
 

@@ -13,10 +13,10 @@ const StreamList = ({}: Props) => {
 
     return (
         <div className="flex flex-wrap justify-between gap-x-3 gap-y-5">
-            {state.streams.map((stream) => (
+            {state.streamState.streams.map((stream) => (
                 <StreamCard key={stream.login} stream={stream} />
             ))}
-            {state.streams.length % 2 === 1 && (
+            {state.streamState.streams.length % 2 === 1 && (
                 <div className="text-left flex-[1_0_40%] self-start">
                     &nbsp;
                 </div>

@@ -9,7 +9,10 @@ export type State = {
         | ({
               status: "LOGGED_IN"
           } & User)
-    streams: Stream[]
+    streamState: {
+        streams: Stream[]
+        status: "IDLE" | "FETCHING"
+    }
 }
 
 export type User = {
