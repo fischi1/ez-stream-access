@@ -3,6 +3,7 @@ import browser from "webextension-polyfill"
 import { StateContext } from "./state/StateContext"
 import StreamList from "./components/streamList/StreamList"
 import { Message } from "../background"
+import RadioToggle from "./components/toggle/RadioToggle"
 
 const App = () => {
     const handleLoginClick = async () => {
@@ -32,6 +33,12 @@ const App = () => {
                         Logout
                     </button>
                 </div>
+                <fieldset>
+                    <legend>Quality</legend>
+                    <RadioToggle value="1" name="quality" />
+                    <RadioToggle value="2" name="quality" />
+                    <RadioToggle value="3" name="quality" />
+                </fieldset>
                 <StreamList />
             </div>
         </StateContext>

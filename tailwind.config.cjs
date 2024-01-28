@@ -9,13 +9,12 @@ module.exports = {
         container: {
             padding: "2rem"
         },
-        colors: {
-            background: "#0e0e10"
-        },
         extend: {
             colors: {
+                background: "#0e0e10",
                 typography: "#efeff1",
-                lightBackground: "#2f2f35"
+                lightBackground: "#2f2f35",
+                violet: "#772ce8"
             }
         }
     }
