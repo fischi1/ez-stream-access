@@ -2,7 +2,8 @@ import browser from "webextension-polyfill"
 import { startLoginFlow } from "./actions/login"
 import { getTwitchContent } from "./actions/getTwitchContent"
 import handleClick from "./actions/clickHandling"
-import { State } from "./types/State"
+import { Quality, State } from "./types/State"
+import { changeQuality } from "./actions/controls"
 
 export const CLIENT_ID = "39df8lhu3w5wmz3ufzxf2cfz2ff0ht"
 
@@ -23,6 +24,10 @@ export type Message =
           action: "click"
           data: ClickData
       }
+    | {
+          action: "changeQuality"
+          data: Quality
+      }
 
 export type ClickData = {
     streamLogin: string
@@ -40,7 +45,7 @@ export type GetStateFunction = () => State
 
 const initialState: State = {
     loggedInState: { status: "NOT_LOGGED_IN" },
-    streamState: { status: "IDLE", streams: [] }
+    streamState: { status: "IDLE", streams: [], quality: "auto" }
 }
 
 let stateHolder = { state: initialState }
@@ -76,6 +81,9 @@ const handleAction: DispatchFunction = async ({ action, data }: Message) => {
             break
         case "fetchStreams":
             getTwitchContent(handleStateUpdate, getState, handleAction)
+            break
+        case "changeQuality":
+            changeQuality(data, handleStateUpdate)
             break
         case "click":
             handleClick(

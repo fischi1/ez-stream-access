@@ -5,9 +5,10 @@ import {
     GetStateFunction,
     UpdateStateFunction
 } from ".."
+import { Quality } from "../types/State"
 
-const popupUrl = (channel: string) =>
-    `https://player.twitch.tv/?channel=${channel}&enableExtensions=true&muted=false&parent=twitch.tv&player=popout&quality=720p60&volume=1`
+const popupUrl = (channel: string, quality: Quality) =>
+    `https://player.twitch.tv/?channel=${channel}&enableExtensions=true&muted=false&parent=twitch.tv&player=popout&quality=${quality}&volume=1`
 
 const channelUrl = (channel: string) => `https://www.twitch.tv/${channel}`
 
@@ -30,7 +31,9 @@ const handleClick = (
     dispatch: DispatchFunction,
     closePopup: () => void
 ) => {
-    const stream = getState().streamState.streams.find(
+    const state = getState()
+
+    const stream = state.streamState.streams.find(
         (stream) => stream.login === data.streamLogin
     )
 
@@ -41,7 +44,10 @@ const handleClick = (
 
     switch (data.clickedItem) {
         case "thumbnail":
-            open(popupUrl(stream.login), data.targetBlank)
+            open(
+                popupUrl(stream.login, state.streamState.quality),
+                data.targetBlank
+            )
             closePopup()
             break
         case "title":

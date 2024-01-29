@@ -12,8 +12,19 @@ export type State = {
     streamState: {
         streams: Stream[]
         status: "IDLE" | "FETCHING"
+        quality: Quality
     }
 }
+
+export const qualities = {
+    auto: "Auto",
+    chunked: "Source (1080p60)",
+    "720p60": "720p60",
+    "720p30": "720p",
+    "480p30": "480p"
+}
+
+export type Quality = keyof typeof qualities
 
 export type User = {
     accessToken: string

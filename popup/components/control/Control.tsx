@@ -1,8 +1,8 @@
 import React from "react"
 import browser from "webextension-polyfill"
 import { Message } from "../../../background"
-import RadioToggle from "../toggle/RadioToggle"
 import { useAppState } from "../../state/StateContext"
+import QualityControls from "./QualityControls"
 
 type Props = {}
 
@@ -29,13 +29,8 @@ const Control = ({}: Props) => {
                     Logout
                 </button>
             </div>
+            <QualityControls />
             <pre>Status: {state?.streamState.status}</pre>
-            <fieldset>
-                <legend>Quality</legend>
-                <RadioToggle value="1" name="quality" />
-                <RadioToggle value="2" name="quality" />
-                <RadioToggle value="3" name="quality" />
-            </fieldset>
         </>
     )
 }
