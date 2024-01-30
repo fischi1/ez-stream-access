@@ -13,6 +13,7 @@ export type State = {
         streams: Stream[]
         status: "IDLE" | "FETCHING"
         quality: Quality
+        lastFetchTime: string
     }
 }
 

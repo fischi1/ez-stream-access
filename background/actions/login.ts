@@ -16,6 +16,10 @@ const startLoginFlow = async (
     getState: GetStateFunction,
     dispatch: DispatchFunction
 ) => {
+    if (getState().loggedInState.status !== "NOT_LOGGED_IN") {
+        return
+    }
+
     updateState((oldState) => ({
         ...oldState,
         ...{ loggedInState: { status: "IN_PROGRESS" } }

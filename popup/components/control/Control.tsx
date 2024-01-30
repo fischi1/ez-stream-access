@@ -17,6 +17,13 @@ const Control = ({}: Props) => {
         browser.runtime.sendMessage({ action: "logout" } as Message)
     }
 
+    const handleRefreshClick = async () => {
+        browser.runtime.sendMessage({
+            action: "refreshStreams",
+            data: { force: true }
+        } as Message)
+    }
+
     return (
         <>
             <div>
@@ -27,6 +34,14 @@ const Control = ({}: Props) => {
             <div>
                 <button className="text-typography" onClick={handleLogoutClick}>
                     Logout
+                </button>
+            </div>
+            <div>
+                <button
+                    className="text-typography"
+                    onClick={handleRefreshClick}
+                >
+                    Refresh
                 </button>
             </div>
             <QualityControls />

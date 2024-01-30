@@ -1,24 +1,31 @@
 import browser from "webextension-polyfill"
-import { startLoginFlow } from "./actions/login"
-import { getTwitchContent } from "./actions/getTwitchContent"
 import handleClick from "./actions/clickHandling"
-import { Quality, State } from "./types/State"
 import { changeQuality } from "./actions/controls"
+import {
+    getTwitchContent,
+    refreshTwitchContent
+} from "./actions/getTwitchContent"
+import { startLoginFlow } from "./actions/login"
+import { Quality, State } from "./types/State"
 
 export const CLIENT_ID = "39df8lhu3w5wmz3ufzxf2cfz2ff0ht"
 
 export type Message =
     | {
           action: "login"
-          data: undefined
+          data?: undefined
       }
     | {
           action: "logout"
-          data: undefined
+          data?: undefined
       }
     | {
           action: "fetchStreams"
-          data: undefined
+          data?: undefined
+      }
+    | {
+          action: "refreshStreams"
+          data?: RefreshStreamsData
       }
     | {
           action: "click"
@@ -35,6 +42,10 @@ export type ClickData = {
     targetBlank: boolean
 }
 
+export type RefreshStreamsData = {
+    force?: boolean
+}
+
 export type UpdateStateFunction = (
     stateUpdate: (oldState: State) => State
 ) => void
@@ -45,18 +56,25 @@ export type GetStateFunction = () => State
 
 const initialState: State = {
     loggedInState: { status: "NOT_LOGGED_IN" },
-    streamState: { status: "IDLE", streams: [], quality: "auto" }
+    streamState: {
+        status: "IDLE",
+        streams: [],
+        quality: "auto",
+        lastFetchTime: new Date(0).toISOString()
+    }
 }
 
 let stateHolder = { state: initialState }
 
 let port: browser.Runtime.Port
 
-browser.storage.local.get("data").then((result) => {
-    if (result?.data) {
-        stateHolder.state = result.data
-    }
-})
+const initializingStatePromise = browser.storage.local
+    .get("data")
+    .then((result) => {
+        if (result?.data) {
+            stateHolder.state = result.data
+        }
+    })
 
 const handleAction: DispatchFunction = async ({ action, data }: Message) => {
     const handleStateUpdate: UpdateStateFunction = (stateUpdate) => {
@@ -82,6 +100,9 @@ const handleAction: DispatchFunction = async ({ action, data }: Message) => {
         case "fetchStreams":
             getTwitchContent(handleStateUpdate, getState, handleAction)
             break
+        case "refreshStreams":
+            refreshTwitchContent(data, handleStateUpdate, getState, handleAction)
+            break
         case "changeQuality":
             changeQuality(data, handleStateUpdate)
             break
@@ -103,8 +124,10 @@ browser.runtime.onMessage.addListener((msg) => {
     return true
 })
 
-browser.runtime.onConnect.addListener((p) => {
+browser.runtime.onConnect.addListener(async (p) => {
     console.assert(p.name === "twitch-web-extension")
     port = p
+    await initializingStatePromise
     p.postMessage({ action: "stateUpdate", state: stateHolder.state })
+    handleAction({ action: "refreshStreams" })
 })

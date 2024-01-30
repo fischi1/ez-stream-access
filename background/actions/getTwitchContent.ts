@@ -1,7 +1,12 @@
-import { DispatchFunction, GetStateFunction, UpdateStateFunction } from ".."
-import { Stream } from "../types/State"
+import {
+    DispatchFunction,
+    GetStateFunction,
+    RefreshStreamsData,
+    UpdateStateFunction
+} from ".."
 import { getStreamsFollowed } from "../api/streamsFollowed"
 import { getUser } from "../api/user"
+import { Stream } from "../types/State"
 
 const getTwitchContent = async (
     updateState: UpdateStateFunction,
@@ -66,11 +71,28 @@ const getTwitchContent = async (
                 streamState: {
                     ...oldState.streamState,
                     streams: newStreams,
-                    status: "IDLE"
+                    status: "IDLE",
+                    lastFetchTime: new Date().toISOString()
                 }
             }
         }
     })
 }
 
-export { getTwitchContent }
+const refreshTwitchContent = async (
+    data: RefreshStreamsData | undefined,
+    updateState: UpdateStateFunction,
+    getState: GetStateFunction,
+    dispatch: DispatchFunction
+) => {
+    const lastFetchDate = new Date(getState().streamState.lastFetchTime)
+
+    if (
+        data?.force ||
+        new Date().getTime() - lastFetchDate.getTime() > 3 * 60 * 1000
+    ) {
+        getTwitchContent(updateState, getState, dispatch)
+    }
+}
+
+export { getTwitchContent, refreshTwitchContent }
