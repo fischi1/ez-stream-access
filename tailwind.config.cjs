@@ -11,10 +11,13 @@ module.exports = {
         },
         extend: {
             colors: {
+                darkBorder: "#040404",
                 background: "#0e0e10",
                 typography: "#efeff1",
+                menu: "#18181b",
                 lightBackground: "#2f2f35",
-                violet: "#772ce8"
+                violet: "#772ce8",
+                violetDarker: "#3a2b66"
             }
         }
     }

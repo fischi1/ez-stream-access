@@ -20,7 +20,7 @@ const QualityControls = ({}: Props) => {
     return (
         <fieldset>
             <legend>Quality</legend>
-            <div className="flex gap-1">
+            <div className="inline-flex gap-1">
                 {Object.keys(qualities).map((key) => (
                     <RadioToggle
                         key={key}

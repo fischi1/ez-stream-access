@@ -54,7 +54,7 @@ export type DispatchFunction = (message: Message) => void
 
 export type GetStateFunction = () => State
 
-const initialState: State = {
+export const initialState: State = {
     loggedInState: { status: "NOT_LOGGED_IN" },
     streamState: {
         status: "IDLE",

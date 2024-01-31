@@ -7,13 +7,14 @@ import React, {
 } from "react"
 import browser from "webextension-polyfill"
 import { State } from "../../background/types/State"
+import { initialState } from "../../background"
 
 type Props = { children: ReactNode }
 
-const context = createContext<State | undefined>(undefined)
+const context = createContext<State>(initialState)
 
 const StateContext = ({ children }: Props) => {
-    const [state, setState] = useState<State>()
+    const [state, setState] = useState<State>(initialState)
 
     useEffect(() => {
         var port = browser.runtime.connect({ name: "twitch-web-extension" })
@@ -32,9 +33,9 @@ const StateContext = ({ children }: Props) => {
     return (
         <context.Provider value={state}>
             {children}
-            <p className="whitespace-break-spaces font-mono py-4 text-background">
+            {/* <p className="whitespace-break-spaces font-mono py-4 text-background">
                 {JSON.stringify(state, null, 4)}
-            </p>
+            </p> */}
         </context.Provider>
     )
 }

@@ -12,7 +12,7 @@ const StreamList = ({}: Props) => {
     }
 
     return (
-        <div className="flex flex-wrap justify-between gap-x-3 gap-y-5">
+        <div className="flex flex-wrap justify-between gap-x-3 gap-y-5 mx-2 py-2">
             {state.streamState.streams.map((stream) => (
                 <StreamCard key={stream.login} stream={stream} />
             ))}
