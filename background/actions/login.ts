@@ -2,8 +2,7 @@ import browser from "webextension-polyfill"
 import { DispatchFunction, GetStateFunction, UpdateStateFunction } from ".."
 import { getUser } from "../api/user"
 
-const DEBUG_CALLBACK_URL: string | undefined =
-    "https://jcalgidillanaopifkinicgeiiomeilh.chromiumapp.org/#access_token=blc0gvw617gpgkv2xnjoi1ph4fy59w&scope=user:read:follows&state=c3ab8aa609ea11e793ae92361f002671&token_type=bearer"
+const DEBUG_CALLBACK_URL = import.meta.env.VITE_DEBUG_CALLBACK_URL
 
 const getTwitchLoginUrl = () => {
     return `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=39df8lhu3w5wmz3ufzxf2cfz2ff0ht&redirect_uri=${browser.identity.getRedirectURL()}&response_type=token&scope=user%3Aread%3Afollows&state=c3ab8aa609ea11e793ae92361f002671`

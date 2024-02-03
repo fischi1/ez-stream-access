@@ -1,8 +1,8 @@
 import React from "react"
+import { useAppState } from "../../state/StateContext"
 import Control from "../control/Control"
 import Login from "../login/Login"
 import StreamList from "../streamList/StreamList"
-import { useAppState } from "../../state/StateContext"
 
 type Props = {}
 
@@ -13,7 +13,11 @@ const Content = ({}: Props) => {
         <div className="bg-background">
             <Control />
             {state?.loggedInState.status === "LOGGED_IN" &&
-                state.streamState.streams.length > 0 ? <StreamList /> : <Login />}
+            state.streamState.streams.length > 0 ? (
+                <StreamList />
+            ) : (
+                <Login />
+            )}
         </div>
     )
 }
