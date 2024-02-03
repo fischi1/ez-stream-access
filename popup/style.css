@@ -26,7 +26,7 @@
         width: calc(800px - var(--scrollbar-width));
     }
 
-    html * {
+    html *:not(svg, path) {
         @apply text-typography;
     }
 }
