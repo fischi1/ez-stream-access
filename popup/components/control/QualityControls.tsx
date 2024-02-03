@@ -18,21 +18,19 @@ const QualityControls = ({}: Props) => {
     }
 
     return (
-        <fieldset>
-            <legend>Quality</legend>
-            <div className="inline-flex gap-1">
-                {Object.keys(qualities).map((key) => (
-                    <RadioToggle
-                        key={key}
-                        name="qualities"
-                        value={key}
-                        checked={state?.streamState.quality === key}
-                        onSelect={() => handleSelect(key as Quality)}
-                    >
-                        {qualities[key]}
-                    </RadioToggle>
-                ))}
-            </div>
+        <fieldset className="flex gap-1">
+            <div>Quality</div>
+            {Object.keys(qualities).map((key) => (
+                <RadioToggle
+                    key={key}
+                    name="qualities"
+                    value={key}
+                    checked={state?.streamState.quality === key}
+                    onSelect={() => handleSelect(key as Quality)}
+                >
+                    {qualities[key]}
+                </RadioToggle>
+            ))}
         </fieldset>
     )
 }

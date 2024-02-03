@@ -101,7 +101,12 @@ const handleAction: DispatchFunction = async ({ action, data }: Message) => {
             getTwitchContent(handleStateUpdate, getState, handleAction)
             break
         case "refreshStreams":
-            refreshTwitchContent(data, handleStateUpdate, getState, handleAction)
+            refreshTwitchContent(
+                data,
+                handleStateUpdate,
+                getState,
+                handleAction
+            )
             break
         case "changeQuality":
             changeQuality(data, handleStateUpdate)
@@ -114,8 +119,9 @@ const handleAction: DispatchFunction = async ({ action, data }: Message) => {
                 handleAction,
                 closePopup
             )
+            break
         default:
-            console.error("unknown action")
+            console.error("unknown action " + action)
     }
 }
 

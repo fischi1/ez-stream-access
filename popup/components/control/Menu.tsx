@@ -1,25 +1,26 @@
+import clsx from "clsx"
 import React, { useEffect, useState } from "react"
+import browser from "webextension-polyfill"
+import { Message } from "../../../background"
 import { useAppState } from "../../state/StateContext"
 import Button from "../button/Button"
-import { Message } from "../../../background"
-import browser from "webextension-polyfill"
+import ClickAwayOverlay from "../clickAwayOverlay/ClickAwayOverlay"
 
 type Props = {}
 
 const Menu = ({}: Props) => {
     const { loggedInState } = useAppState()
 
-    const [open, setOpen] = useState(true)
-    
+    const [open, setOpen] = useState(false)
+
     const handleLogoutClick = async () => {
         browser.runtime.sendMessage({ action: "logout" } as Message)
     }
 
     useEffect(() => {
-        if(loggedInState.status !== "LOGGED_IN") {
+        if (loggedInState.status !== "LOGGED_IN") {
             setOpen(false)
         }
-
     }, [loggedInState.status])
 
     return (
@@ -37,12 +38,24 @@ const Menu = ({}: Props) => {
                     &nbsp;
                 </div>
             )}
-            {open && loggedInState.status === "LOGGED_IN" && (
-                <div className="bg-menu rounded-md border border-darkBorder absolute top-[65px] right-[10px] w-[250px] p-3">
-                    <p className="font text-lg font-bold">{loggedInState.displayName}</p>
-                    <Button onClick={handleLogoutClick}>Logout</Button>
+
+            <ClickAwayOverlay enabled={open} onClick={() => setOpen(false)}>
+                <div
+                    className={clsx(
+                        "bg-menu rounded-md border border-darkBorder absolute top-[65px] right-[10px] w-[250px] p-3 justify-between z-clickAwayElement",
+                        open ? "flex" : "hidden"
+                    )}
+                >
+                    <p className="font text-lg font-bold">
+                        {loggedInState.status === "LOGGED_IN"
+                            ? loggedInState.displayName
+                            : undefined}
+                    </p>
+                    <div>
+                        <Button onClick={handleLogoutClick}>Logout</Button>
+                    </div>
                 </div>
-            )}
+            </ClickAwayOverlay>
         </div>
     )
 }

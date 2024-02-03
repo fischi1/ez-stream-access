@@ -1,8 +1,6 @@
 import React from "react"
-import Control from "./components/control/Control"
-import StreamList from "./components/streamList/StreamList"
+import Content from "./components/content/Content"
 import { StateContext } from "./state/StateContext"
-import Content from "./content/Content"
 
 const App = () => {
     return (

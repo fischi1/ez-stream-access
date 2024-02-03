@@ -18,6 +18,10 @@ module.exports = {
                 lightBackground: "#2f2f35",
                 violet: "#772ce8",
                 violetDarker: "#3a2b66"
+            },
+            zIndex: {
+                clickAwayListener: "999999",
+                clickAwayElement: `${999999 + 1}`
             }
         }
     }

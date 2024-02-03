@@ -1,8 +1,8 @@
 import React from "react"
-import Control from "../components/control/Control"
-import Login from "../components/login/Login"
-import StreamList from "../components/streamList/StreamList"
-import { useAppState } from "../state/StateContext"
+import Control from "../control/Control"
+import Login from "../login/Login"
+import StreamList from "../streamList/StreamList"
+import { useAppState } from "../../state/StateContext"
 
 type Props = {}
 
