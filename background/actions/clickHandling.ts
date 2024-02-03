@@ -7,14 +7,16 @@ import {
 } from ".."
 import { Quality } from "../types/State"
 
-const popupUrl = (channel: string, quality: Quality) =>
+export const popupUrl = (channel: string, quality: Quality) =>
     `https://player.twitch.tv/?channel=${channel}&enableExtensions=true&muted=false&parent=twitch.tv&player=popout&quality=${quality}&volume=1`
 
-const channelUrl = (channel: string) => `https://www.twitch.tv/${channel}`
+export const channelUrl = (channel: string) =>
+    `https://www.twitch.tv/${channel}`
 
-const videosUrl = (channel: string) => `https://www.twitch.tv/${channel}/videos`
+export const videosUrl = (channel: string) =>
+    `https://www.twitch.tv/${channel}/videos`
 
-const gameUrl = (gameName: string) =>
+export const gameUrl = (gameName: string) =>
     `https://www.twitch.tv/directory/category/${normalizeGameName(gameName)}`
 
 const normalizeGameName = (gameName: string) => {

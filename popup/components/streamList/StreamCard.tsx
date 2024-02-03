@@ -1,13 +1,22 @@
 import React from "react"
-import { Stream } from "../../../background/types/State"
 import browser from "webextension-polyfill"
 import { Message } from "../../../background"
+import {
+    channelUrl,
+    gameUrl,
+    popupUrl,
+    videosUrl
+} from "../../../background/actions/clickHandling"
+import { Stream } from "../../../background/types/State"
+import { useAppState } from "../../state/StateContext"
 
 type Props = {
     stream: Stream
 }
 
 const StreamCard = ({ stream }: Props) => {
+    const state = useAppState()
+
     const thumbnailUrl = stream.thumbnailUrl
         .replace("{width}", "400")
         .replace("{height}", "225")
@@ -41,7 +50,7 @@ const StreamCard = ({ stream }: Props) => {
     return (
         <div className="text-left flex-[1_0_40%] self-start">
             <a
-                href="#"
+                href={popupUrl(stream.login, state.streamState.quality)}
                 onClick={(e) => handleClick(e, "thumbnail")}
                 onAuxClick={(e) => handleClick(e, "thumbnail")}
                 className="block w-full aspect-video bg-lightBackground relative"
@@ -57,7 +66,7 @@ const StreamCard = ({ stream }: Props) => {
             </a>
             <div className="flex mt-1">
                 <a
-                    href="#"
+                    href={channelUrl(stream.login)}
                     onClick={(e) => handleClick(e, "profileImage")}
                     onAuxClick={(e) => handleClick(e, "profileImage")}
                     className="block p-2 flex-grow-0 flex-shrink-0"
@@ -74,7 +83,7 @@ const StreamCard = ({ stream }: Props) => {
                 </a>
                 <div>
                     <a
-                        href="#"
+                        href={channelUrl(stream.login)}
                         onClick={(e) => handleClick(e, "title")}
                         onAuxClick={(e) => handleClick(e, "title")}
                         className="text-base block"
@@ -82,7 +91,7 @@ const StreamCard = ({ stream }: Props) => {
                         {stream.title}
                     </a>
                     <a
-                        href="#"
+                        href={videosUrl(stream.login)}
                         onClick={(e) => handleClick(e, "name")}
                         onAuxClick={(e) => handleClick(e, "name")}
                         className="block"
@@ -90,7 +99,7 @@ const StreamCard = ({ stream }: Props) => {
                         {stream.displayName}
                     </a>
                     <a
-                        href="#"
+                        href={gameUrl(stream.gameName)}
                         onClick={(e) => handleClick(e, "gameName")}
                         onAuxClick={(e) => handleClick(e, "gameName")}
                         className="block"
