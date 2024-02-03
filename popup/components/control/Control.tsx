@@ -21,13 +21,11 @@ const Control = ({}: Props) => {
     return (
         <>
             <div className="flex h-16 w-full bg-menu fixed top-0 z-10 border-b-darkBorder border-b-2 items-center justify-between gap-3 px-3">
-                <div>
-                    <img
-                        src={img}
-                        alt="Twitch web extension"
-                        className="w-9 aspect-square rounded-full object-cover"
-                    />
-                </div>
+                <img
+                    src={img}
+                    alt="Twitch web extension"
+                    className="h-10 aspect-square object-cover"
+                />
                 <div className="flex-grow">&nbsp;</div>
                 <QualityControls />
                 <div>
