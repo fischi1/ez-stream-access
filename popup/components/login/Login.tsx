@@ -16,7 +16,7 @@ const Login = ({}: Props) => {
     const inProgress = loggedInState.status === "IN_PROGRESS"
 
     return (
-        <div className="flex h-20 items-center justify-center">
+        <div className="flex h-48 items-center justify-center">
             <div className="h-fit">
                 <Button onClick={handleLoginClick} disabled={inProgress}>
                     {inProgress ? "Logging in..." : "Login"}

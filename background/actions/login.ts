@@ -34,14 +34,27 @@ const startLoginFlow = async (
 
     const state = generateRandomString()
 
-    if (!DEBUG_CALLBACK_URL) {
-        url = await browser.identity.launchWebAuthFlow({
-            url: getTwitchLoginUrl(state),
-            interactive: true
-        })
-    } else {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        url = DEBUG_CALLBACK_URL
+    try {
+        if (!DEBUG_CALLBACK_URL) {
+            url = await browser.identity.launchWebAuthFlow({
+                url: getTwitchLoginUrl(state),
+                interactive: true
+            })
+        } else {
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+            url = DEBUG_CALLBACK_URL
+        }
+    } catch (error) {
+        console.error("error logging in", error)
+        updateState((oldState) => ({
+            ...oldState,
+            ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
+        }))
+        addToast(
+            { message: "There was an error logging in", type: "error" },
+            updateState
+        )
+        return
     }
 
     if (
@@ -49,37 +62,66 @@ const startLoginFlow = async (
         !url.includes("access_token=") ||
         !url.includes("state=")
     ) {
+        console.error(
+            "returned url didn't match the rules of a successful redirect"
+        )
         updateState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
         }))
-        // TODO error
+        addToast(
+            { message: "There was an error logging in", type: "error" },
+            updateState
+        )
         return
     }
 
     const urlSearchParams = new URLSearchParams(url.split("#")[1])
 
     if (state !== urlSearchParams.get("state") && !DEBUG_CALLBACK_URL) {
+        console.error("state query param didn't match")
         updateState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
         }))
-        // TODO error
+        addToast(
+            { message: "There was an error logging in", type: "error" },
+            updateState
+        )
         return
     }
 
     const accessToken = urlSearchParams.get("access_token")!
 
-    const userData = await getUser(accessToken)
+    let userData
 
-    const loggedInUser = userData.data?.[0]
-
-    if (!loggedInUser) {
+    try {
+        userData = await getUser(accessToken)
+    } catch (error) {
+        console.log("error fetching user info", error)
         updateState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
         }))
-        // TODO error
+        addToast(
+            { message: "There was an error logging in", type: "error" },
+            updateState
+        )
+        return
+    }
+
+    const loggedInUser = userData.data?.[0]
+
+    if (!loggedInUser) {
+        console.log("getUser didn't return anything")
+        updateState((oldState) => ({
+            ...oldState,
+            ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
+        }))
+        addToast(
+            { message: "There was an error logging in", type: "error" },
+            updateState
+        )
         return
     }
 
