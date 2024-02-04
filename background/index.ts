@@ -7,6 +7,7 @@ import {
 } from "./actions/getTwitchContent"
 import { startLoginFlow } from "./actions/login"
 import { Quality, State } from "./types/State"
+import { clearToasts } from "./actions/toasts"
 
 export const CLIENT_ID = "39df8lhu3w5wmz3ufzxf2cfz2ff0ht"
 
@@ -35,6 +36,9 @@ export type Message =
           action: "changeQuality"
           data: Quality
       }
+    | {
+          action: "clearToasts"
+      }
 
 export type ClickData = {
     streamLogin: string
@@ -61,7 +65,8 @@ export const initialState: State = {
         streams: [],
         quality: "auto",
         lastFetchTime: new Date(0).toISOString()
-    }
+    },
+    toasts: []
 }
 
 let stateHolder = { state: initialState }
@@ -119,6 +124,9 @@ const handleAction: DispatchFunction = async ({ action, data }: Message) => {
                 handleAction,
                 closePopup
             )
+            break
+        case "clearToasts":
+            clearToasts(handleStateUpdate)
             break
         default:
             console.error("unknown action " + action)

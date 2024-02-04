@@ -1,11 +1,17 @@
 import browser from "webextension-polyfill"
-import { DispatchFunction, GetStateFunction, UpdateStateFunction } from ".."
+import {
+    CLIENT_ID,
+    DispatchFunction,
+    GetStateFunction,
+    UpdateStateFunction
+} from ".."
 import { getUser } from "../api/user"
+import { addToast } from "./toasts"
 
 const DEBUG_CALLBACK_URL = import.meta.env.VITE_DEBUG_CALLBACK_URL
 
-const getTwitchLoginUrl = () => {
-    return `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=39df8lhu3w5wmz3ufzxf2cfz2ff0ht&redirect_uri=${browser.identity.getRedirectURL()}&response_type=token&scope=user%3Aread%3Afollows&state=c3ab8aa609ea11e793ae92361f002671`
+const getTwitchLoginUrl = (state: string) => {
+    return `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=${browser.identity.getRedirectURL()}&response_type=token&scope=user%3Aread%3Afollows&state=${state}`
 }
 
 const urlRegex = /^https:\/\/.*#(.*=.*&*)$/
@@ -26,11 +32,11 @@ const startLoginFlow = async (
 
     let url: string
 
-    const state = "c3ab8aa609ea11e793ae92361f002671"
+    const state = generateRandomString()
 
     if (!DEBUG_CALLBACK_URL) {
         url = await browser.identity.launchWebAuthFlow({
-            url: getTwitchLoginUrl(),
+            url: getTwitchLoginUrl(state),
             interactive: true
         })
     } else {
@@ -53,7 +59,7 @@ const startLoginFlow = async (
 
     const urlSearchParams = new URLSearchParams(url.split("#")[1])
 
-    if (state !== urlSearchParams.get("state")) {
+    if (state !== urlSearchParams.get("state") && !DEBUG_CALLBACK_URL) {
         updateState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
@@ -91,7 +97,25 @@ const startLoginFlow = async (
         }
     }))
 
+    addToast(
+        {
+            message: `You are now logged in as ${loggedInUser.display_name}`,
+            type: "success"
+        },
+        updateState
+    )
+
     dispatch({ action: "fetchStreams" })
+}
+
+const generateRandomString = () => {
+    const charArr = (Math.random() + new Date().toISOString()).split("")
+    // https://stackoverflow.com/a/12646864
+    for (let i = charArr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[charArr[i], charArr[j]] = [charArr[j], charArr[i]]
+    }
+    return btoa(charArr.join(""))
 }
 
 export { startLoginFlow }

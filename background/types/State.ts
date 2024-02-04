@@ -15,6 +15,7 @@ export type State = {
         quality: Quality
         lastFetchTime: string
     }
+    toasts: Toast[]
 }
 
 export const qualities = {
@@ -46,4 +47,9 @@ export type Stream = {
     startedAt: string
     thumbnailUrl: string
     profileImageUrl: string | undefined
+}
+
+export type Toast = {
+    type: "info" | "warn" | "success" | "error"
+    message: string
 }

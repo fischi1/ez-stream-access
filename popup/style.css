@@ -5,6 +5,8 @@
 @layer base {
     :root {
         --scrollbar-width: 7px;
+        --toastify-color-dark: #0e0e10;
+        --toastify-toast-top: calc(4rem + 10px);
     }
 
     ::-webkit-scrollbar {
