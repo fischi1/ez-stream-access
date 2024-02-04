@@ -23,14 +23,14 @@ const Control = ({}: Props) => {
             <div className="flex h-16 w-full bg-menu fixed top-0 z-10 border-b-darkBorder border-b-2 items-center justify-between gap-3 px-3">
                 <img
                     src={img}
-                    alt="Twitch web extension"
+                    alt="EZ Stream Access"
                     className="h-10 aspect-square object-cover"
                 />
                 <div className="flex-grow">&nbsp;</div>
                 <QualityControls />
                 <div>
                     <button
-                        className="enabled:hover:bg-background rounded-full p-1 enabled:text-typography disabled:text-slate-300"
+                        className="enabled:hover:bg-background rounded-full p-1 enabled:text-typography disabled:text-slate-400"
                         onClick={handleRefreshClick}
                         disabled={
                             state.loggedInState.status !== "LOGGED_IN" ||
