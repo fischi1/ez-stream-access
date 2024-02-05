@@ -12,12 +12,6 @@
     "default_popup": "./popup/index.html",
     "default_title": "Open EZ Stream Access"
   },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "addon@example.com",
-      "strict_min_version": "100.0"
-    }
-  },
   "permissions": [
     "identity",
     "storage"
