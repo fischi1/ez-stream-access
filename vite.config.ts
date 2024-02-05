@@ -26,6 +26,7 @@ export default defineConfig({
             output: {
                 entryFileNames: "[name]/[name].js"
             }
-        }
+        },
+        sourcemap: true
     }
 })

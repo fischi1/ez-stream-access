@@ -7,7 +7,8 @@ import {
 } from "./actions/getTwitchContent"
 import { startLoginFlow } from "./actions/login"
 import { Quality, State } from "./types/State"
-import { clearToasts } from "./actions/toasts"
+import { addToast, clearToasts } from "./actions/toasts"
+import { StatusError } from "./types/StatusError"
 
 export const CLIENT_ID = "39df8lhu3w5wmz3ufzxf2cfz2ff0ht"
 
@@ -38,6 +39,7 @@ export type Message =
       }
     | {
           action: "clearToasts"
+          data?: undefined
       }
 
 export type ClickData = {
@@ -92,45 +94,74 @@ const handleAction: DispatchFunction = async ({ action, data }: Message) => {
 
     const closePopup = () => port?.postMessage({ action: "close" })
 
-    switch (action) {
-        case "login":
-            startLoginFlow(handleStateUpdate, getState, handleAction)
-            break
-        case "logout":
-            stateHolder = { state: initialState }
-            handleStateUpdate(() => {
-                return stateHolder.state
-            })
-            break
-        case "fetchStreams":
-            getTwitchContent(handleStateUpdate, getState, handleAction)
-            break
-        case "refreshStreams":
-            refreshTwitchContent(
-                data,
-                handleStateUpdate,
-                getState,
-                handleAction
+    try {
+        switch (action) {
+            case "login":
+                await startLoginFlow(handleStateUpdate, getState, handleAction)
+                break
+            case "logout":
+                await logout(handleStateUpdate)
+                break
+            case "fetchStreams":
+                await getTwitchContent(
+                    handleStateUpdate,
+                    getState,
+                    handleAction
+                )
+                break
+            case "refreshStreams":
+                await refreshTwitchContent(
+                    data,
+                    handleStateUpdate,
+                    getState,
+                    handleAction
+                )
+                break
+            case "changeQuality":
+                await changeQuality(data, handleStateUpdate)
+                break
+            case "click":
+                await handleClick(
+                    data,
+                    handleStateUpdate,
+                    getState,
+                    handleAction,
+                    closePopup
+                )
+                break
+            case "clearToasts":
+                await clearToasts(handleStateUpdate)
+                break
+            default:
+                console.error("unknown action " + action)
+        }
+    } catch (error) {
+        if (isStatusError(error) && error.status === 401) {
+            addToast(
+                {
+                    message: "Login no longer valid. You need to login again.",
+                    type: "error"
+                },
+                handleStateUpdate
             )
-            break
-        case "changeQuality":
-            changeQuality(data, handleStateUpdate)
-            break
-        case "click":
-            handleClick(
-                data,
-                handleStateUpdate,
-                getState,
-                handleAction,
-                closePopup
-            )
-            break
-        case "clearToasts":
-            clearToasts(handleStateUpdate)
-            break
-        default:
-            console.error("unknown action " + action)
+            logout(handleStateUpdate)
+        } else {
+            console.error("error", error)
+        }
     }
+}
+
+const isStatusError = (error: any): error is StatusError => {
+    return (
+        typeof error.status === "number" && typeof error.statusText === "string"
+    )
+}
+
+const logout = (handleStateUpdate: UpdateStateFunction) => {
+    stateHolder = { state: initialState }
+    handleStateUpdate(() => {
+        return stateHolder.state
+    })
 }
 
 browser.runtime.onMessage.addListener((msg) => {

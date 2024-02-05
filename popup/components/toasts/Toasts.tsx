@@ -13,9 +13,7 @@ const Toasts = ({}: Props) => {
         if (toasts.length === 0) {
             return
         }
-        console.log("handling toasts")
         for (let t of toasts) {
-            console.log("toast", t)
             switch (t.type) {
                 case "error":
                     toast.error(t.message)

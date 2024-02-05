@@ -98,7 +98,7 @@ const startLoginFlow = async (
     try {
         userData = await getUser(accessToken)
     } catch (error) {
-        console.log("error fetching user info", error)
+        console.error("error fetching user info", error)
         updateState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
@@ -113,7 +113,7 @@ const startLoginFlow = async (
     const loggedInUser = userData.data?.[0]
 
     if (!loggedInUser) {
-        console.log("getUser didn't return anything")
+        console.error("getUser didn't return anything")
         updateState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }

@@ -30,6 +30,7 @@ export default defineConfig({
                 entryFileNames: "background/background.js",
                 extend: true
             }
-        }
+        },
+        sourcemap: true
     }
 })

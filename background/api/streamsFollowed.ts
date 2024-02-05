@@ -36,7 +36,7 @@ const getStreamsFollowed = async (
     )
 
     if (!response.ok) {
-        throw new Error(`Got status ${response.status}`)
+        throw { statusText: response.statusText, status: response.status }
     }
 
     return await response.json()
