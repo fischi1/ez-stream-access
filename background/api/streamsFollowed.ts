@@ -1,4 +1,5 @@
 import { CLIENT_ID } from ".."
+import fetchWithRetry from "./fetchWithRetry"
 
 export type Stream = {
     id: string
@@ -25,14 +26,15 @@ const getStreamsFollowed = async (
     userId: string,
     accessToken: string
 ): Promise<Response> => {
-    const response = await fetch(
+    const response = await fetchWithRetry(
         `https://api.twitch.tv/helix/streams/followed?user_id=${userId}`,
         {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
                 "Client-Id": CLIENT_ID
             }
-        }
+        },
+        15
     )
 
     if (!response.ok) {

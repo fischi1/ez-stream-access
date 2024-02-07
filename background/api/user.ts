@@ -1,4 +1,5 @@
 import { CLIENT_ID } from ".."
+import fetchWithRetry from "./fetchWithRetry"
 
 type UserData = {
     id: string
@@ -19,12 +20,16 @@ const getUser = async (
     accessToken: string,
     logins?: string[]
 ): Promise<Response> => {
-    const response = await fetch(getUrl(logins), {
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Client-Id": CLIENT_ID
-        }
-    })
+    const response = await fetchWithRetry(
+        getUrl(logins),
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Client-Id": CLIENT_ID
+            }
+        },
+        15
+    )
 
     if (!response.ok) {
         throw { statusText: response.statusText, status: response.status }
