@@ -8,7 +8,7 @@ import RadioToggle from "../toggle/RadioToggle"
 type Props = {}
 
 const QualityControls = ({}: Props) => {
-    const state = useAppState()
+    const { streamState } = useAppState()
 
     const handleSelect = (newQuality: Quality) => {
         browser.runtime.sendMessage({
@@ -25,7 +25,7 @@ const QualityControls = ({}: Props) => {
                     key={key}
                     name="qualities"
                     value={key}
-                    checked={state?.streamState.quality === key}
+                    checked={streamState.quality === key}
                     onSelect={() => handleSelect(key as Quality)}
                 >
                     {qualities[key]}

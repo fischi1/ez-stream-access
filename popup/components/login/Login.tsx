@@ -17,11 +17,9 @@ const Login = ({}: Props) => {
 
     return (
         <div className="flex h-48 items-center justify-center">
-            <div className="h-fit">
-                <Button onClick={handleLoginClick} disabled={inProgress}>
-                    {inProgress ? "Logging in..." : "Login"}
-                </Button>
-            </div>
+            <Button onClick={handleLoginClick} disabled={inProgress}>
+                {inProgress ? "Logging in..." : "Login"}
+            </Button>
         </div>
     )
 }

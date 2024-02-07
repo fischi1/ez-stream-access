@@ -7,17 +7,12 @@ import StreamList from "../streamList/StreamList"
 type Props = {}
 
 const Content = ({}: Props) => {
-    const state = useAppState()
+    const { loggedInState } = useAppState()
 
     return (
         <div className="bg-background">
             <Control />
-            {state?.loggedInState.status === "LOGGED_IN" &&
-            state.streamState.streams.length > 0 ? (
-                <StreamList />
-            ) : (
-                <Login />
-            )}
+            {loggedInState.status === "LOGGED_IN" ? <StreamList /> : <Login />}
         </div>
     )
 }

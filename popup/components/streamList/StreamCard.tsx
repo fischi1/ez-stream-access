@@ -15,7 +15,7 @@ type Props = {
 }
 
 const StreamCard = ({ stream }: Props) => {
-    const state = useAppState()
+    const { streamState } = useAppState()
 
     const thumbnailUrl = stream.thumbnailUrl
         .replace("{width}", "400")
@@ -50,7 +50,7 @@ const StreamCard = ({ stream }: Props) => {
     return (
         <div className="text-left flex-[1_0_40%] self-start">
             <a
-                href={popupUrl(stream.login, state.streamState.quality)}
+                href={popupUrl(stream.login, streamState.quality)}
                 onClick={(e) => handleClick(e, "thumbnail")}
                 onAuxClick={(e) => handleClick(e, "thumbnail")}
                 className="block w-full aspect-video bg-lightBackground relative"
