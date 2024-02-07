@@ -1,4 +1,5 @@
 import { CLIENT_ID } from ".."
+import { TwitchPagination } from "../types/TwitchPagination"
 import fetchWithRetry from "./fetchWithRetry"
 
 export type Stream = {
@@ -20,14 +21,38 @@ export type Stream = {
 
 type Response = {
     data: Stream[]
+    pagination: TwitchPagination
 }
 
 const getStreamsFollowed = async (
     userId: string,
     accessToken: string
+): Promise<Stream[]> => {
+    const streams: Stream[] = []
+
+    let cursor: string | undefined
+    do {
+        const response = await fetchPage(userId, accessToken, cursor)
+        streams.push(...response.data)
+        cursor = response.pagination.cursor
+    } while (cursor)
+
+    return streams
+}
+
+const fetchPage = async (
+    userId: string,
+    accessToken: string,
+    cursor?: string
 ): Promise<Response> => {
+    const urlSearchParams = new URLSearchParams()
+    urlSearchParams.append("user_id", userId)
+    if (cursor) {
+        urlSearchParams.append("after", cursor)
+    }
+
     const response = await fetchWithRetry(
-        `https://api.twitch.tv/helix/streams/followed?user_id=${userId}`,
+        `https://api.twitch.tv/helix/streams/followed?${urlSearchParams}`,
         {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
