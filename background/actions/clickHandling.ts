@@ -1,10 +1,5 @@
 import browser from "webextension-polyfill"
-import {
-    ClickData,
-    DispatchFunction,
-    GetStateFunction,
-    UpdateStateFunction
-} from ".."
+import { ClickData, Context } from ".."
 import { Quality } from "../types/State"
 
 export const popupUrl = (channel: string, quality: Quality) =>
@@ -26,13 +21,7 @@ const normalizeGameName = (gameName: string) => {
         .replace(/\s/g, "-")
 }
 
-const handleClick = (
-    data: ClickData,
-    updateState: UpdateStateFunction,
-    getState: GetStateFunction,
-    dispatch: DispatchFunction,
-    closePopup: () => void
-) => {
+const handleClick = (data: ClickData, { getState, closePopup }: Context) => {
     const state = getState()
 
     const stream = state.streamState.streams.find(

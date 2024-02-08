@@ -1,10 +1,5 @@
 import browser from "webextension-polyfill"
-import {
-    CLIENT_ID,
-    DispatchFunction,
-    GetStateFunction,
-    UpdateStateFunction
-} from ".."
+import { CLIENT_ID, Context } from ".."
 import { UserData, getUser } from "../api/user"
 import { addToast } from "./toasts"
 
@@ -16,16 +11,14 @@ const getTwitchLoginUrl = (state: string) => {
 
 const urlRegex = /^https:\/\/.*#(.*=.*&*)$/
 
-const startLoginFlow = async (
-    updateState: UpdateStateFunction,
-    getState: GetStateFunction,
-    dispatch: DispatchFunction
-) => {
+const startLoginFlow = async (context: Context) => {
+    const { setState, getState, dispatch } = context
+
     if (getState().loggedInState.status !== "NOT_LOGGED_IN") {
         return
     }
 
-    updateState((oldState) => ({
+    setState((oldState) => ({
         ...oldState,
         ...{ loggedInState: { status: "IN_PROGRESS" } }
     }))
@@ -46,13 +39,13 @@ const startLoginFlow = async (
         }
     } catch (error) {
         console.error("error logging in", error)
-        updateState((oldState) => ({
+        setState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
         }))
         addToast(
             { message: "There was an error logging in", type: "error" },
-            updateState
+            context
         )
         return
     }
@@ -65,13 +58,13 @@ const startLoginFlow = async (
         console.error(
             "returned url didn't match the rules of a successful redirect"
         )
-        updateState((oldState) => ({
+        setState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
         }))
         addToast(
             { message: "There was an error logging in", type: "error" },
-            updateState
+            context
         )
         return
     }
@@ -80,13 +73,13 @@ const startLoginFlow = async (
 
     if (state !== urlSearchParams.get("state") && !DEBUG_CALLBACK_URL) {
         console.error("state query param didn't match")
-        updateState((oldState) => ({
+        setState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
         }))
         addToast(
             { message: "There was an error logging in", type: "error" },
-            updateState
+            context
         )
         return
     }
@@ -99,31 +92,31 @@ const startLoginFlow = async (
         userData = (await getUser(accessToken))?.[0]
     } catch (error) {
         console.error("error fetching user info", error)
-        updateState((oldState) => ({
+        setState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
         }))
         addToast(
             { message: "There was an error logging in", type: "error" },
-            updateState
+            context
         )
         return
     }
 
     if (!userData) {
         console.error("getUser didn't return anything")
-        updateState((oldState) => ({
+        setState((oldState) => ({
             ...oldState,
             ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
         }))
         addToast(
             { message: "There was an error logging in", type: "error" },
-            updateState
+            context
         )
         return
     }
 
-    updateState((oldState) => ({
+    setState((oldState) => ({
         ...oldState,
         ...{
             loggedInState: {
@@ -142,10 +135,10 @@ const startLoginFlow = async (
             message: `You are now logged in as ${userData.display_name}`,
             type: "success"
         },
-        updateState
+        context
     )
 
-    dispatch({ action: "fetchStreams" })
+    dispatch({ action: "fetchStreams" }, context)
 }
 
 const generateRandomString = () => {

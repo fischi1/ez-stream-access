@@ -1,19 +1,11 @@
-import {
-    DispatchFunction,
-    GetStateFunction,
-    RefreshStreamsData,
-    UpdateStateFunction
-} from ".."
+import { Context, RefreshStreamsData } from ".."
 import { getStreamsFollowed } from "../api/streamsFollowed"
 import { getUser } from "../api/user"
 import { Stream } from "../types/State"
 import { addToast } from "./toasts"
 
-const getTwitchContent = async (
-    updateState: UpdateStateFunction,
-    getState: GetStateFunction,
-    dispatch: DispatchFunction
-) => {
+const getTwitchContent = async (context: Context) => {
+    const { setState, getState } = context
     try {
         const state = getState()
 
@@ -24,7 +16,7 @@ const getTwitchContent = async (
             return
         }
 
-        updateState((oldState) => ({
+        setState((oldState) => ({
             ...oldState,
             ...{ streamState: { ...oldState.streamState, status: "FETCHING" } }
         }))
@@ -47,7 +39,7 @@ const getTwitchContent = async (
             profileImageUrl: undefined
         }))
 
-        updateState((oldState) => ({
+        setState((oldState) => ({
             ...oldState,
             ...{ streamState: { ...oldState.streamState, streams: streams } }
         }))
@@ -57,7 +49,7 @@ const getTwitchContent = async (
             getState().streamState.streams.map((stream) => stream.login)
         )
 
-        updateState((oldState) => {
+        setState((oldState) => {
             const newStreams = oldState.streamState.streams.map((stream) => {
                 return {
                     ...stream,
@@ -80,7 +72,7 @@ const getTwitchContent = async (
             }
         })
     } catch (error) {
-        updateState((oldState) => {
+        setState((oldState) => {
             return {
                 ...oldState,
                 ...{
@@ -96,7 +88,7 @@ const getTwitchContent = async (
                 message: "There was error fetching content from the Twitch API",
                 type: "error"
             },
-            updateState
+            context
         )
         throw error
     }
@@ -104,17 +96,16 @@ const getTwitchContent = async (
 
 const refreshTwitchContent = async (
     data: RefreshStreamsData | undefined,
-    updateState: UpdateStateFunction,
-    getState: GetStateFunction,
-    dispatch: DispatchFunction
+    context: Context
 ) => {
+    const { getState } = context
     const lastFetchDate = new Date(getState().streamState.lastFetchTime)
 
     if (
         data?.force ||
         new Date().getTime() - lastFetchDate.getTime() > 3 * 60 * 1000
     ) {
-        await getTwitchContent(updateState, getState, dispatch)
+        await getTwitchContent(context)
     }
 }
 
