@@ -1,7 +1,7 @@
 import { CLIENT_ID } from ".."
 import fetchWithRetry from "./fetchWithRetry"
 
-type UserData = {
+export type UserData = {
     id: string
     login: string
     display_name: string
@@ -16,7 +16,25 @@ type UserData = {
 
 type Response = { data: UserData[] }
 
+const TWITCH_API_USER_LIMIT = 100
+
 const getUser = async (
+    accessToken: string,
+    logins?: string[]
+): Promise<UserData[]> => {
+    if ((logins?.length ?? 0) > 0) {
+        const promises = splitArrayIntoGroups(logins!).map((group) =>
+            getUsersPaged(accessToken, group)
+        )
+        return (await Promise.all(promises)).flatMap(
+            (response) => response.data
+        )
+    }
+
+    return (await getUsersPaged(accessToken)).data
+}
+
+const getUsersPaged = async (
     accessToken: string,
     logins?: string[]
 ): Promise<Response> => {
@@ -36,6 +54,14 @@ const getUser = async (
     }
 
     return await response.json()
+}
+
+const splitArrayIntoGroups = (userIds: string[]) => {
+    const result: string[][] = []
+    for (let i = 0; i < userIds.length; i += TWITCH_API_USER_LIMIT) {
+        result.push(userIds.slice(i, i + TWITCH_API_USER_LIMIT))
+    }
+    return result
 }
 
 const getUrl = (logins: string[] | undefined) => {

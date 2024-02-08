@@ -52,7 +52,7 @@ const getTwitchContent = async (
             ...{ streamState: { ...oldState.streamState, streams: streams } }
         }))
 
-        const streamerInfo = await getUser(
+        const streamerInfos = await getUser(
             state.loggedInState.accessToken,
             getState().streamState.streams.map((stream) => stream.login)
         )
@@ -61,7 +61,7 @@ const getTwitchContent = async (
             const newStreams = oldState.streamState.streams.map((stream) => {
                 return {
                     ...stream,
-                    profileImageUrl: streamerInfo.data.find(
+                    profileImageUrl: streamerInfos.find(
                         (streamer) => streamer.login === stream.login
                     )?.profile_image_url
                 }

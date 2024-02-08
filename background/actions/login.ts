@@ -5,7 +5,7 @@ import {
     GetStateFunction,
     UpdateStateFunction
 } from ".."
-import { getUser } from "../api/user"
+import { UserData, getUser } from "../api/user"
 import { addToast } from "./toasts"
 
 const DEBUG_CALLBACK_URL = import.meta.env.VITE_DEBUG_CALLBACK_URL
@@ -93,10 +93,10 @@ const startLoginFlow = async (
 
     const accessToken = urlSearchParams.get("access_token")!
 
-    let userData
+    let userData: UserData
 
     try {
-        userData = await getUser(accessToken)
+        userData = (await getUser(accessToken))?.[0]
     } catch (error) {
         console.error("error fetching user info", error)
         updateState((oldState) => ({
@@ -110,9 +110,7 @@ const startLoginFlow = async (
         return
     }
 
-    const loggedInUser = userData.data?.[0]
-
-    if (!loggedInUser) {
+    if (!userData) {
         console.error("getUser didn't return anything")
         updateState((oldState) => ({
             ...oldState,
@@ -131,17 +129,17 @@ const startLoginFlow = async (
             loggedInState: {
                 status: "LOGGED_IN",
                 accessToken: accessToken,
-                displayName: loggedInUser.display_name,
-                login: loggedInUser.login,
-                id: loggedInUser.id,
-                profileImageUrl: loggedInUser.profile_image_url
+                displayName: userData.display_name,
+                login: userData.login,
+                id: userData.id,
+                profileImageUrl: userData.profile_image_url
             }
         }
     }))
 
     addToast(
         {
-            message: `You are now logged in as ${loggedInUser.display_name}`,
+            message: `You are now logged in as ${userData.display_name}`,
             type: "success"
         },
         updateState
