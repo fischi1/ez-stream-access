@@ -1,5 +1,6 @@
 import browser from "webextension-polyfill"
-import { ClickData, Context } from ".."
+import { Context } from ".."
+import { ClickData } from "../dispatch"
 import { Quality } from "../types/State"
 
 export const popupUrl = (channel: string, quality: Quality) =>

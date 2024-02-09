@@ -1,8 +1,7 @@
-import React from "react"
 import browser from "webextension-polyfill"
-import Button from "../button/Button"
-import { Message } from "../../../background"
+import { Message } from "../../../background/dispatch"
 import { useAppState } from "../../state/StateContext"
+import Button from "../button/Button"
 
 type Props = {}
 

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { ToastContainer, toast } from "react-toastify"
-import { useAppState } from "../../state/StateContext"
 import browser from "webextension-polyfill"
-import { Message } from "../../../background"
+import { Message } from "../../../background/dispatch"
+import { useAppState } from "../../state/StateContext"
 
 type Props = {}
 

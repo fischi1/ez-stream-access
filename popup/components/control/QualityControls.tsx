@@ -1,6 +1,5 @@
-import React from "react"
 import browser from "webextension-polyfill"
-import { Message } from "../../../background"
+import { Message } from "../../../background/dispatch"
 import { Quality, qualities } from "../../../background/types/State"
 import { useAppState } from "../../state/StateContext"
 import RadioToggle from "../toggle/RadioToggle"
@@ -28,7 +27,7 @@ const QualityControls = ({}: Props) => {
                     checked={streamState.quality === key}
                     onSelect={() => handleSelect(key as Quality)}
                 >
-                    {qualities[key]}
+                    {qualities[key as Quality]}
                 </RadioToggle>
             ))}
         </fieldset>

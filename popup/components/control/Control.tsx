@@ -1,6 +1,5 @@
-import React from "react"
 import browser from "webextension-polyfill"
-import { Message } from "../../../background"
+import { Message } from "../../../background/dispatch"
 import img from "../../../public/icon-72x72.png"
 import { useAppState } from "../../state/StateContext"
 import ArrowClockwiseIcon from "../arrowClockwiseIcon/ArrowClockwiseIcon"

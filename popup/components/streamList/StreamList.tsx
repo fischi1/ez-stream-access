@@ -1,7 +1,6 @@
-import React from "react"
 import { useAppState } from "../../state/StateContext"
-import StreamCard from "./StreamCard"
 import ArrowClockwiseIcon from "../arrowClockwiseIcon/ArrowClockwiseIcon"
+import StreamCard from "./StreamCard"
 
 type Props = {}
 

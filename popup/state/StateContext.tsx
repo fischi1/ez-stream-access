@@ -1,4 +1,4 @@
-import React, {
+import {
     ReactNode,
     createContext,
     useContext,
@@ -6,8 +6,8 @@ import React, {
     useState
 } from "react"
 import browser from "webextension-polyfill"
-import { State } from "../../background/types/State"
 import { initialState } from "../../background"
+import { State } from "../../background/types/State"
 
 type Props = { children: ReactNode }
 

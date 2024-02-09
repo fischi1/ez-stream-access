@@ -2,7 +2,7 @@ const fetchWithRetry = async (
     input: URL | RequestInfo,
     init?: RequestInit | undefined,
     retries?: number
-) => {
+): ReturnType<typeof fetch> => {
     const response = await fetch(input, init)
 
     if (response.status === 429 && retries && retries > 0) {

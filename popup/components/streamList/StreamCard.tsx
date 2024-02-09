@@ -1,12 +1,12 @@
 import React from "react"
 import browser from "webextension-polyfill"
-import { Message } from "../../../background"
 import {
     channelUrl,
     gameUrl,
     popupUrl,
     videosUrl
 } from "../../../background/actions/clickHandling"
+import { Message } from "../../../background/dispatch"
 import { Stream } from "../../../background/types/State"
 import { useAppState } from "../../state/StateContext"
 

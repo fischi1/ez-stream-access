@@ -1,6 +1,7 @@
-import { Context, RefreshStreamsData } from ".."
+import { Context } from ".."
 import { getStreamsFollowed } from "../api/streamsFollowed"
 import { getUser } from "../api/user"
+import { RefreshStreamsData } from "../dispatch"
 import { Stream } from "../types/State"
 import { addToast } from "./toasts"
 

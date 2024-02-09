@@ -36,8 +36,6 @@
     "start:firefox:watcher": "npm run watch:firefox",
     "start:firefox:startBrowser": "node ./.github/scripts/start.js firefox",
     "test": "run-s test:*",
-    "test:component": "wdio run ./wdio.ui.conf.ts",
-    "test:e2e": "wdio run ./wdio.e2e.conf.ts",
     "version": "run-s version:*",
     "version:update": "npx replace ' \"version\": \"(\\d+).(\\d+).(\\d+)\"' \" \\\"version\\\": \\\"$npm_package_version\\\"\" ./public/*.json",
     "version:bundle": "run-s bundle",

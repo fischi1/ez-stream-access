@@ -1,4 +1,3 @@
-import React from "react"
 import { useAppState } from "../../state/StateContext"
 import Control from "../control/Control"
 import Login from "../login/Login"
