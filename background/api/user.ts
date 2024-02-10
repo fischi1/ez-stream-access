@@ -1,4 +1,4 @@
-import { CLIENT_ID } from ".."
+import { CLIENT_ID } from "../clientId"
 import fetchWithRetry from "./fetchWithRetry"
 
 export type UserData = {

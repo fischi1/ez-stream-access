@@ -2,8 +2,6 @@ import browser from "webextension-polyfill"
 import dispatch, { DispatchFunction } from "./dispatch"
 import { State } from "./types/State"
 
-export const CLIENT_ID = "39df8lhu3w5wmz3ufzxf2cfz2ff0ht"
-
 export type SetStateFunction = (stateUpdate: (oldState: State) => State) => void
 
 export type GetStateFunction = () => State

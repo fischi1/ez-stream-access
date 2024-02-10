@@ -1,4 +1,4 @@
-import { CLIENT_ID } from ".."
+import { CLIENT_ID } from "../clientId"
 import { TwitchPagination } from "../types/TwitchPagination"
 import fetchWithRetry from "./fetchWithRetry"
 
@@ -14,12 +14,12 @@ export type Stream = {
     viewer_count: number
     started_at: string
     thumbnail_url: string
-    tag_id: []
+    tag_ids: []
     tags: string[]
     is_mature: boolean
 }
 
-type Response = {
+export type StreamsFollowedResponse = {
     data: Stream[]
     pagination: TwitchPagination
 }
@@ -44,7 +44,7 @@ const fetchPage = async (
     userId: string,
     accessToken: string,
     cursor?: string
-): Promise<Response> => {
+): Promise<StreamsFollowedResponse> => {
     const urlSearchParams = new URLSearchParams()
     urlSearchParams.append("user_id", userId)
     if (cursor) {

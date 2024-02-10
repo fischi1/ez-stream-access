@@ -1,5 +1,6 @@
 import browser from "webextension-polyfill"
-import { CLIENT_ID, Context } from ".."
+import { Context } from ".."
+import { CLIENT_ID } from "../clientId"
 import { UserData, getUser } from "../api/user"
 import { addToast } from "./toasts"
 
