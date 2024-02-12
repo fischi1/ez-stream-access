@@ -39,6 +39,7 @@ describe("getStreamsFollowed", () => {
 
         expect(streams).toEqual(originalStreams)
     })
+    
     it("should throw if fetch returns an error", async () => {
         mockedfetchWithRetry.mockReturnValue(
             Promise.resolve({

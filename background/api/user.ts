@@ -14,7 +14,7 @@ export type UserData = {
     created_at: string
 }
 
-type Response = { data: UserData[] }
+export type UserResponse = { data: UserData[] }
 
 const TWITCH_API_USER_LIMIT = 100
 
@@ -37,7 +37,7 @@ const getUser = async (
 const getUsersPaged = async (
     accessToken: string,
     logins?: string[]
-): Promise<Response> => {
+): Promise<UserResponse> => {
     const response = await fetchWithRetry(
         getUrl(logins),
         {
