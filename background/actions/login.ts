@@ -35,7 +35,7 @@ const startLoginFlow = async (context: Context) => {
                 interactive: true
             })
         } else {
-            await new Promise((resolve) => setTimeout(resolve, 1000))
+            await new Promise((resolve) => setTimeout(resolve, 100))
             url = DEBUG_CALLBACK_URL
         }
     } catch (error) {

@@ -86,7 +86,7 @@ const StreamCard = ({ stream }: Props) => {
                         href={channelUrl(stream.login)}
                         onClick={(e) => handleClick(e, "title")}
                         onAuxClick={(e) => handleClick(e, "title")}
-                        className="text-base block"
+                        className="text-base block break-anywhere"
                     >
                         {stream.title}
                     </a>
@@ -94,7 +94,7 @@ const StreamCard = ({ stream }: Props) => {
                         href={videosUrl(stream.login)}
                         onClick={(e) => handleClick(e, "name")}
                         onAuxClick={(e) => handleClick(e, "name")}
-                        className="block"
+                        className="block break-anywhere"
                     >
                         {stream.displayName}
                     </a>
@@ -102,7 +102,7 @@ const StreamCard = ({ stream }: Props) => {
                         href={gameUrl(stream.gameName)}
                         onClick={(e) => handleClick(e, "gameName")}
                         onAuxClick={(e) => handleClick(e, "gameName")}
-                        className="block"
+                        className="block break-anywhere"
                     >
                         {stream.gameName}
                     </a>
