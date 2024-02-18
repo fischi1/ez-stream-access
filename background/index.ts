@@ -86,7 +86,6 @@ const initializingStatePromise = browser.storage.local
 
 browser.runtime.onMessage.addListener((msg) => {
     dispatch(msg, context)
-    return true
 })
 
 browser.runtime.onConnect.addListener(async (p) => {

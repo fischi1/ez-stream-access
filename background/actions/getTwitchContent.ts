@@ -27,7 +27,7 @@ const getTwitchContent = async (context: Context) => {
             state.loggedInState.accessToken
         )
 
-        var streams: Stream[] = streamData.map((stream) => ({
+        const streams: Stream[] = streamData.map((stream) => ({
             displayName: stream.user_name,
             gameId: stream.game_id,
             gameName: stream.game_name,

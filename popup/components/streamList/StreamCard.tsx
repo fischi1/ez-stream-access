@@ -64,7 +64,7 @@ const StreamCard = ({ stream }: Props) => {
                     {stream.viewerCount}
                 </div>
             </a>
-            <div className="flex mt-1">
+            <div className="flex items-start mt-1">
                 <a
                     href={channelUrl(stream.login)}
                     onClick={(e) => handleClick(e, "profileImage")}

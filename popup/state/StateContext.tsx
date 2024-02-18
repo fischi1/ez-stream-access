@@ -17,17 +17,36 @@ const StateContext = ({ children }: Props) => {
     const [state, setState] = useState<State>(initialState)
 
     useEffect(() => {
-        var port = browser.runtime.connect({ name: "twitch-web-extension" })
-        port.onMessage.addListener(({ action, state }) => {
-            switch (action) {
-                case "stateUpdate":
-                    setState(state)
-                    break
-                case "close":
-                    window.close()
-                    break
-            }
-        })
+        let port: browser.Runtime.Port
+
+        const connectPort = () => {
+            port = browser.runtime.connect({ name: "twitch-web-extension" })
+            console.log("port connected")
+
+            port.onMessage.addListener(({ action, state }) => {
+                switch (action) {
+                    case "stateUpdate":
+                        setState(state)
+                        break
+                    case "close":
+                        window.close()
+                        break
+                }
+            })
+
+            port.onDisconnect.addListener(() => {
+                console.log("port disconnected")
+                port = connectPort()
+            })
+
+            return port
+        }
+
+        port = connectPort()
+
+        return () => {
+            port.disconnect()
+        }
     }, [])
 
     return <context.Provider value={state}>{children}</context.Provider>
