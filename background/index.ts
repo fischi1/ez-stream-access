@@ -65,7 +65,7 @@ const generateContext = (): {
     }
 }
 
-let { context, stateHolder } = generateContext()
+let contextHolder = generateContext()
 
 export const resetContext: ResetContextFunction = (c: Context) => {
     const { setState } = c
@@ -73,25 +73,25 @@ export const resetContext: ResetContextFunction = (c: Context) => {
         return initialState
     })
     c.invalidHolder.invalid = true
-    context = generateContext().context
+    contextHolder = generateContext()
 }
 
 const initializingStatePromise = browser.storage.local
     .get("data")
     .then((result) => {
         if (result?.data) {
-            stateHolder.state = result.data
+            contextHolder.stateHolder.state = result.data
         }
     })
 
 browser.runtime.onMessage.addListener((msg) => {
-    dispatch(msg, context)
+    dispatch(msg, contextHolder.context)
 })
 
 browser.runtime.onConnect.addListener(async (p) => {
     console.assert(p.name === "twitch-web-extension")
     port = p
     await initializingStatePromise
-    p.postMessage({ action: "stateUpdate", state: stateHolder.state })
-    dispatch({ action: "refreshStreams" }, context)
+    p.postMessage({ action: "stateUpdate", state: contextHolder.stateHolder.state })
+    dispatch({ action: "refreshStreams" }, contextHolder.context)
 })
