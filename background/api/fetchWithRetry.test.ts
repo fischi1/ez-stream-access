@@ -4,7 +4,7 @@ import fetchWithRetry from "./fetchWithRetry"
 
 beforeEach(() => {
     // @ts-ignore
-    global.setTimeout = jest.fn((callback: () => void) => callback())
+    global.setTimeout = fn((callback: () => void) => callback())
 })
 
 afterEach(() => {
@@ -80,8 +80,9 @@ describe("fetchWithRetry", () => {
 
     it("should return other status immedieately", async () => {
         // @ts-ignore
-        global.fetch = fn()
-            .mockReturnValueOnce(Promise.resolve({ status: 401 }))
+        global.fetch = fn().mockReturnValueOnce(
+            Promise.resolve({ status: 401 })
+        )
 
         const response = await fetchWithRetry(
             "http://super-secret-api.com",
