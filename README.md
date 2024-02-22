@@ -1,77 +1,11 @@
-# My Web Extension
+# EZ Stream Access - Browser Extension
 
-> This is a starter kit for building cross platform browser extensions. You can use it as a template for your project. It comes with a [Vite](https://vitejs.dev/) + [TailwindCSS](https://tailwindcss.com/) + [WebdriverIO](https://webdriver.io) setup for building and testing extension popup modals, content and background scripts. Read more about building cross platform browser extensions in our [corresponding blog post](https://stateful.com/blog/building-cross-browser-web-extensions).
+This extension streamlines your twitch usage by saving you time opening your favorite channels.
 
-A browser web extension that works on Chrome, Firefox and Safari. Download the extension on the marketplaces:
+-   Save a clicks by being able to open twitch channels directly from a the extension menu accessible from the browser toolbar
+-   Clicking on the thumbnail opens the channel with the video player covering the whole browser window. No chat or twitch UI. Perfect for selecting streams to watch on your second monitor! EZ Stream Access also remembers the stream quality you selected in the popup. This saves you a few seconds you normally have to spend selecting your quality.
+-   Clicking on the stream title or profile picture of the channel opens the normal channel page.
+-   A click on the name of the streamer leads you to their videos page.
+-   And a click on the game or category name opens the directory page.
 
--   Chrome:: https://chrome.google.com/webstore/detail/my-web-extension/lnihnbkolojkaehnkdmpliededkfebkk
--   Firefox: https://addons.mozilla.org/en-GB/firefox/addon/my-web-extension/
--   Safari: _(not yet supported, see [`stateful/web-extension-starter-kit#1`](https://github.com/stateful/web-extension-starter-kit/issues/1))_
-
-## Development
-
-### Setup
-
-Install dependencies via:
-
-```sh
-npm install
-```
-
-then start a browser with the web extension installed:
-
-```sh
-# run Chrome
-npm run start:chrome
-```
-
-or
-
-```sh
-# run Firefox
-npm run start:firefox
-```
-
-This will build the extension and start a browser with it being loaded in it. After making changes, Vite automatically will re-compile the files and you can reload the extension to apply them in the browser.
-
-### Build
-
-Bundle the extension by running:
-
-```sh
-npm run build
-```
-
-This script will bundle the extension as `web-extension-chrome-vX.X.X.crx` and `web-extension-firefox-vX.X.X.zip`. The generated files are in `dist/`. You can also grab a version from the [latest test](https://github.com/stateful/web-extension-starter-kit/actions/workflows/test.yml) run on the `main` branch.
-
-#### Load in Firefox
-
-To load the extension in Firefox go to `about:debugging#/runtime/this-firefox` or `Firefox > Preferences > Extensions & Themes > Debug Add-ons > Load Temporary Add-on...`. Here locate the `dist/` directory and open `manifestv2.json`
-
-#### Load in Chrome
-
-To load the extensions in Google Chrome go to `chrome://extensions/` and click `Load unpacked`. Locate the dist directory and select `manifest.json`.
-
-### Test
-
-This project tests the extension files using component tests and the extension integration via e2e test with WebdriverIO.
-
-Run unit/component tests:
-
-```sh
-npm run test:component
-```
-
-Run e2e tests:
-
-```sh
-npm run test:e2e
-```
-
-## Files:
-
--   content-script - UI files
--   background.ts - Background script/Service worker
--   index.html - popup UI
-
-If you have any questions feel free to open an issue.
+The project was set up with [web-extension-starter-kit](https://github.com/stateful/web-extension-starter-kit).
