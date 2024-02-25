@@ -1,7 +1,7 @@
 import browser from "webextension-polyfill"
 import { Context } from ".."
-import { CLIENT_ID } from "../clientId"
 import { UserData, getUser } from "../api/user"
+import { CLIENT_ID } from "../clientId"
 import { addToast } from "./toasts"
 
 const DEBUG_CALLBACK_URL = import.meta.env.VITE_DEBUG_CALLBACK_URL
@@ -21,7 +21,7 @@ const startLoginFlow = async (context: Context) => {
 
     setState((oldState) => ({
         ...oldState,
-        ...{ loggedInState: { status: "IN_PROGRESS" } }
+        loggedInState: { status: "IN_PROGRESS" }
     }))
 
     let url: string
@@ -42,7 +42,7 @@ const startLoginFlow = async (context: Context) => {
         console.error("error logging in", error)
         setState((oldState) => ({
             ...oldState,
-            ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
+            loggedInState: { status: "NOT_LOGGED_IN" }
         }))
         addToast(
             { message: "There was an error logging in", type: "error" },
@@ -61,7 +61,7 @@ const startLoginFlow = async (context: Context) => {
         )
         setState((oldState) => ({
             ...oldState,
-            ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
+            loggedInState: { status: "NOT_LOGGED_IN" }
         }))
         addToast(
             { message: "There was an error logging in", type: "error" },
@@ -76,7 +76,7 @@ const startLoginFlow = async (context: Context) => {
         console.error("state query param didn't match")
         setState((oldState) => ({
             ...oldState,
-            ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
+            loggedInState: { status: "NOT_LOGGED_IN" }
         }))
         addToast(
             { message: "There was an error logging in", type: "error" },
@@ -95,7 +95,7 @@ const startLoginFlow = async (context: Context) => {
         console.error("error fetching user info", error)
         setState((oldState) => ({
             ...oldState,
-            ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
+            loggedInState: { status: "NOT_LOGGED_IN" }
         }))
         addToast(
             { message: "There was an error logging in", type: "error" },
@@ -108,7 +108,7 @@ const startLoginFlow = async (context: Context) => {
         console.error("getUser didn't return anything")
         setState((oldState) => ({
             ...oldState,
-            ...{ loggedInState: { status: "NOT_LOGGED_IN" } }
+            loggedInState: { status: "NOT_LOGGED_IN" }
         }))
         addToast(
             { message: "There was an error logging in", type: "error" },
@@ -119,15 +119,13 @@ const startLoginFlow = async (context: Context) => {
 
     setState((oldState) => ({
         ...oldState,
-        ...{
-            loggedInState: {
-                status: "LOGGED_IN",
-                accessToken: accessToken,
-                displayName: userData.display_name,
-                login: userData.login,
-                id: userData.id,
-                profileImageUrl: userData.profile_image_url
-            }
+        loggedInState: {
+            status: "LOGGED_IN",
+            accessToken: accessToken,
+            displayName: userData.display_name,
+            login: userData.login,
+            id: userData.id,
+            profileImageUrl: userData.profile_image_url
         }
     }))
 
@@ -153,3 +151,4 @@ const generateRandomString = () => {
 }
 
 export { startLoginFlow }
+

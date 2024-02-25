@@ -125,7 +125,7 @@ describe("getTwitchContent", () => {
                     display_name: "STREAMER 2",
                     type: "",
                     broadcaster_type: "",
-                    description: "hellot world",
+                    description: "hello world",
                     profile_image_url: "https://picsum.photos/200/300",
                     offline_image_url: "https://picsum.photos/200/300",
                     view_count: 1234,

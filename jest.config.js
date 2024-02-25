@@ -17,8 +17,7 @@ const config = {
                             options: {
                                 metaObjectReplacement: {
                                     env: {
-                                        VITE_DEBUG_CALLBACK_URL:
-                                            "https://www.url.com"
+                                        VITE_DEBUG_CALLBACK_URL: undefined
                                     }
                                 }
                             }
