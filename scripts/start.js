@@ -14,11 +14,8 @@ async function startBrowser() {
     const capabilities = {
         browserName: "chrome",
         "goog:chromeOptions": {
-            args: [
-                `--load-extension=${path.join(__dirname, "..", "dist")}`
-            ]
-        },
-        browserVersion: "122.0.6261.39"
+            args: [`--load-extension=${path.join(__dirname, "..", "dist")}`]
+        }
     }
     const browser = await remote({
         // logLevel: 'error',
