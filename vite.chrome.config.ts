@@ -14,7 +14,6 @@ const fetchVersion = () => {
     }
 }
 
-// https://vitejs.dev/config/
 export default defineConfig({
     plugins: [fetchVersion()],
     build: {
