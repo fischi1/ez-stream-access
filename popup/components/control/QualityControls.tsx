@@ -1,6 +1,6 @@
 import browser from "webextension-polyfill"
-import { Message } from "../../../background/dispatch"
-import { Quality, qualities } from "../../../background/types/State"
+import { Message } from "../../../shared/types/Message"
+import { Quality, qualities } from "../../../shared/types/State"
 import { useAppState } from "../../state/StateContext"
 import RadioToggle from "../toggle/RadioToggle"
 
@@ -13,7 +13,7 @@ const QualityControls = ({}: Props) => {
         browser.runtime.sendMessage({
             action: "changeQuality",
             data: newQuality
-        } as Message)
+        } satisfies Message)
     }
 
     return (

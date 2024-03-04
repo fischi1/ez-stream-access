@@ -1,5 +1,5 @@
 import { CLIENT_ID } from "../clientId"
-import { TwitchPagination } from "../types/TwitchPagination"
+import { StatusError } from "../../shared/types/StatusError"
 import fetchWithRetry from "./fetchWithRetry"
 
 export type Stream = {
@@ -22,6 +22,13 @@ export type Stream = {
 export type StreamsFollowedResponse = {
     data: Stream[]
     pagination: TwitchPagination
+}
+
+/**
+ * Pagination object that indicates if there are more pages
+ */
+type TwitchPagination = {
+    cursor?: string
 }
 
 const getStreamsFollowed = async (
@@ -63,7 +70,10 @@ const fetchPage = async (
     )
 
     if (!response.ok) {
-        throw { statusText: response.statusText, status: response.status }
+        throw {
+            statusText: response.statusText,
+            status: response.status
+        } satisfies StatusError
     }
 
     return await response.json()

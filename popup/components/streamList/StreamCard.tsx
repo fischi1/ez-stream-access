@@ -6,8 +6,8 @@ import {
     popupUrl,
     videosUrl
 } from "../../../background/actions/clickHandling"
-import { Message } from "../../../background/dispatch"
-import { Stream } from "../../../background/types/State"
+import { Message } from "../../../shared/types/Message"
+import { Stream } from "../../../shared/types/State"
 import { useAppState } from "../../state/StateContext"
 
 type Props = {

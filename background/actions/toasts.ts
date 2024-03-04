@@ -1,5 +1,5 @@
 import { Context } from ".."
-import { Toast } from "../types/State"
+import { Toast } from "../../shared/types/State"
 
 const addToast = async (toast: Toast, { setState }: Context) => {
     setState((oldState) => ({

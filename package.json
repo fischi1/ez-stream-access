@@ -7,7 +7,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "clean": "rimraf --glob dist ./*.zip ./*.crx",
+    "clean": "rimraf --glob dist ./*.zip",
     "build": "run-s clean compile",
     "bundle": "node scripts/bundle.js",
     "compile": "run-s tsc compile:*",

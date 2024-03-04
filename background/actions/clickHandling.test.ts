@@ -1,7 +1,7 @@
 import { expect, it, jest } from "@jest/globals"
-import { Context, initialState } from ".."
+import { Context } from ".."
 import browser from "../../__mocks__/webextension-polyfill"
-import { Quality, State, Stream } from "../types/State"
+import { Quality, State, Stream, initialState } from "../../shared/types/State"
 import handleClick, {
     channelUrl,
     gameUrl,
@@ -83,7 +83,7 @@ describe("handleClick", () => {
                                 quality: "480p30"
                             }
                         }
-                    }) as State,
+                    } as State),
                 closePopup: () => {}
             } as unknown as Context
         )
@@ -110,7 +110,7 @@ describe("handleClick", () => {
                                 quality: "480p30"
                             }
                         }
-                    }) as State,
+                    } as State),
                 closePopup: () => {}
             } as unknown as Context
         )
@@ -139,7 +139,7 @@ describe("handleClick", () => {
                                 quality: "480p30"
                             }
                         }
-                    }) as State,
+                    } as State),
                 closePopup: closePopupMock
             } as unknown as Context
         )

@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { ToastContainer, toast } from "react-toastify"
 import browser from "webextension-polyfill"
-import { Message } from "../../../background/dispatch"
+import { Message } from "../../../shared/types/Message"
 import { useAppState } from "../../state/StateContext"
 
 type Props = {}
@@ -31,7 +31,7 @@ const Toasts = ({}: Props) => {
         }
         browser.runtime.sendMessage({
             action: "clearToasts"
-        } as Message)
+        } satisfies Message)
     }, [toasts])
 
     return (

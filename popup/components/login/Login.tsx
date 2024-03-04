@@ -1,5 +1,5 @@
 import browser from "webextension-polyfill"
-import { Message } from "../../../background/dispatch"
+import { Message } from "../../../shared/types/Message"
 import { useAppState } from "../../state/StateContext"
 import Button from "../button/Button"
 
@@ -9,7 +9,7 @@ const Login = ({}: Props) => {
     const { loggedInState } = useAppState()
 
     const handleLoginClick = async () => {
-        browser.runtime.sendMessage({ action: "login" } as Message)
+        browser.runtime.sendMessage({ action: "login" } satisfies Message)
     }
 
     const inProgress = loggedInState.status === "IN_PROGRESS"

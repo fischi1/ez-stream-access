@@ -1,7 +1,7 @@
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import browser from "webextension-polyfill"
-import { Message } from "../../../background/dispatch"
+import { Message } from "../../../shared/types/Message"
 import { useAppState } from "../../state/StateContext"
 import Button from "../button/Button"
 import ClickAwayOverlay from "../clickAwayOverlay/ClickAwayOverlay"
@@ -14,7 +14,7 @@ const Menu = ({}: Props) => {
     const [open, setOpen] = useState(false)
 
     const handleLogoutClick = async () => {
-        browser.runtime.sendMessage({ action: "logout" } as Message)
+        browser.runtime.sendMessage({ action: "logout" } satisfies Message)
     }
 
     useEffect(() => {

@@ -1,4 +1,5 @@
 import { CLIENT_ID } from "../clientId"
+import { StatusError } from "../../shared/types/StatusError"
 import fetchWithRetry from "./fetchWithRetry"
 
 export type UserData = {
@@ -50,7 +51,10 @@ const getUsersPaged = async (
     )
 
     if (!response.ok) {
-        throw { statusText: response.statusText, status: response.status }
+        throw {
+            statusText: response.statusText,
+            status: response.status
+        } satisfies StatusError
     }
 
     return await response.json()

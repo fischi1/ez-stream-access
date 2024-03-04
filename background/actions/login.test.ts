@@ -1,10 +1,10 @@
 import { expect, jest } from "@jest/globals"
 import { fn } from "jest-mock"
-import { Context, GetStateFunction, SetStateFunction, initialState } from ".."
+import { Context, GetStateFunction, SetStateFunction } from ".."
 import browser from "../../__mocks__/webextension-polyfill"
+import { State, initialState } from "../../shared/types/State"
 import { getUser } from "../api/user"
 import { DispatchFunction } from "../dispatch"
-import { State } from "../types/State"
 import { startLoginFlow } from "./login"
 
 jest.mock("../api/user")

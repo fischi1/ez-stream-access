@@ -1,6 +1,6 @@
 import browser from "webextension-polyfill"
+import { State, initialState } from "../shared/types/State"
 import dispatch, { DispatchFunction } from "./dispatch"
-import { State } from "./types/State"
 
 export type SetStateFunction = (stateUpdate: (oldState: State) => State) => void
 
@@ -16,17 +16,6 @@ export type Context = {
     dispatch: DispatchFunction
     closePopup: ClosePopupFunction
     invalidHolder: { invalid: boolean }
-}
-
-export const initialState: State = {
-    loggedInState: { status: "NOT_LOGGED_IN" },
-    streamState: {
-        status: "IDLE",
-        streams: [],
-        quality: "auto",
-        lastFetchTime: new Date(0).toISOString()
-    },
-    toasts: []
 }
 
 let port: browser.Runtime.Port

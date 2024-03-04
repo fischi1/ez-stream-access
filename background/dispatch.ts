@@ -1,4 +1,6 @@
 import { Context, resetContext } from "."
+import { Message } from "../shared/types/Message"
+import { StatusError } from "../shared/types/StatusError"
 import handleClick from "./actions/clickHandling"
 import { changeQuality } from "./actions/controls"
 import {
@@ -7,48 +9,6 @@ import {
 } from "./actions/getTwitchContent"
 import { startLoginFlow } from "./actions/login"
 import { addToast, clearToasts } from "./actions/toasts"
-import { Quality } from "./types/State"
-import { StatusError } from "./types/StatusError"
-
-export type Message =
-    | {
-          action: "login"
-          data?: undefined
-      }
-    | {
-          action: "logout"
-          data?: undefined
-      }
-    | {
-          action: "fetchStreams"
-          data?: undefined
-      }
-    | {
-          action: "refreshStreams"
-          data?: RefreshStreamsData
-      }
-    | {
-          action: "click"
-          data: ClickData
-      }
-    | {
-          action: "changeQuality"
-          data: Quality
-      }
-    | {
-          action: "clearToasts"
-          data?: undefined
-      }
-
-export type ClickData = {
-    streamLogin: string
-    clickedItem: "thumbnail" | "title" | "name" | "gameName" | "profileImage"
-    targetBlank: boolean
-}
-
-export type RefreshStreamsData = {
-    force?: boolean
-}
 
 export type DispatchFunction = (
     message: Message,

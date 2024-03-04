@@ -1,6 +1,6 @@
 import browser from "webextension-polyfill"
-import { Message } from "../../../background/dispatch"
 import img from "../../../public/icon-72x72.png"
+import { Message } from "../../../shared/types/Message"
 import { useAppState } from "../../state/StateContext"
 import ArrowClockwiseIcon from "../arrowClockwiseIcon/ArrowClockwiseIcon"
 import Menu from "./Menu"
@@ -15,7 +15,7 @@ const Control = ({}: Props) => {
         browser.runtime.sendMessage({
             action: "refreshStreams",
             data: { force: true }
-        } as Message)
+        } satisfies Message)
     }
 
     return (

@@ -1,8 +1,8 @@
 import { Context } from ".."
+import { RefreshStreamsData } from "../../shared/types/Message"
+import { Stream } from "../../shared/types/State"
 import { getStreamsFollowed } from "../api/streamsFollowed"
 import { getUser } from "../api/user"
-import { RefreshStreamsData } from "../dispatch"
-import { Stream } from "../types/State"
 import { addToast } from "./toasts"
 
 const getTwitchContent = async (context: Context) => {

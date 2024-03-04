@@ -1,10 +1,10 @@
 import { expect, jest } from "@jest/globals"
 import { fn } from "jest-mock"
-import { Context, GetStateFunction, SetStateFunction, initialState } from ".."
+import { Context, GetStateFunction, SetStateFunction } from ".."
+import { State, initialState } from "../../shared/types/State"
 import { getStreamsFollowed } from "../api/streamsFollowed"
 import { getUser } from "../api/user"
 import { generateStream } from "../testUtils/generateStream"
-import { State } from "../types/State"
 import { getTwitchContent, refreshTwitchContent } from "./getTwitchContent"
 
 jest.mock("../api/streamsFollowed")

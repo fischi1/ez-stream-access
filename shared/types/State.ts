@@ -18,6 +18,17 @@ export type State = {
     toasts: Toast[]
 }
 
+export const initialState: State = {
+    loggedInState: { status: "NOT_LOGGED_IN" },
+    streamState: {
+        status: "IDLE",
+        streams: [],
+        quality: "auto",
+        lastFetchTime: new Date(0).toISOString()
+    },
+    toasts: []
+}
+
 export const qualities = {
     auto: "Auto",
     chunked: "Source (1080p60)",
