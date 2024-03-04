@@ -17,7 +17,9 @@
     "start": "npm run build && run-p start:browser watch",
     "start:browser": "node ./scripts/start.js",
     "watch": "run-p \"compile:* -- {@}\" -- --watch",
-    "test": "jest"
+    "test": "jest",
+    "preversion": "npm run tsc && npm test",
+    "postversion": "npm run bundle"
   },
   "devDependencies": {
     "@testing-library/react": "^14.2.1",

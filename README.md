@@ -9,3 +9,9 @@ This extension streamlines your twitch usage by saving you time opening your fav
 -   And a click on the game or category name opens the directory page.
 
 The project was set up with [web-extension-starter-kit](https://github.com/stateful/web-extension-starter-kit).
+
+## Create a new build for the chrome web store
+
+```
+npm version major|minor|patch
+```
