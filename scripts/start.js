@@ -1,8 +1,5 @@
-#!/usr/bin/env node
-
 import path from "node:path"
 import url from "node:url"
-
 import { remote } from "webdriverio"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
