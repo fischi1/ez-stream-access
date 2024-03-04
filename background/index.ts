@@ -92,6 +92,9 @@ browser.runtime.onConnect.addListener(async (p) => {
     console.assert(p.name === "twitch-web-extension")
     port = p
     await initializingStatePromise
-    p.postMessage({ action: "stateUpdate", state: contextHolder.stateHolder.state })
+    p.postMessage({
+        action: "stateUpdate",
+        state: contextHolder.stateHolder.state
+    })
     dispatch({ action: "refreshStreams" }, contextHolder.context)
 })

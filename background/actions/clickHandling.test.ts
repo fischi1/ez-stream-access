@@ -83,7 +83,7 @@ describe("handleClick", () => {
                                 quality: "480p30"
                             }
                         }
-                    } as State),
+                    }) as State,
                 closePopup: () => {}
             } as unknown as Context
         )
@@ -110,7 +110,7 @@ describe("handleClick", () => {
                                 quality: "480p30"
                             }
                         }
-                    } as State),
+                    }) as State,
                 closePopup: () => {}
             } as unknown as Context
         )
@@ -139,7 +139,7 @@ describe("handleClick", () => {
                                 quality: "480p30"
                             }
                         }
-                    } as State),
+                    }) as State,
                 closePopup: closePopupMock
             } as unknown as Context
         )

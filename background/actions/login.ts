@@ -151,4 +151,3 @@ const generateRandomString = () => {
 }
 
 export { startLoginFlow }
-
