@@ -1,5 +1,5 @@
 import browser from "webextension-polyfill"
-import { Message } from "../../../shared/types/Message"
+import { Message } from "@shared/types/Message"
 import { useAppState } from "../../state/StateContext"
 import Button from "../button/Button"
 

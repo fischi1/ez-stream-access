@@ -1,6 +1,6 @@
+import { RefreshStreamsData } from "@shared/types/Message"
+import { Stream } from "@shared/types/State"
 import { Context } from ".."
-import { RefreshStreamsData } from "../../shared/types/Message"
-import { Stream } from "../../shared/types/State"
 import { getStreamsFollowed } from "../api/streamsFollowed"
 import { getUser } from "../api/user"
 import { addToast } from "./toasts"

@@ -1,3 +1,4 @@
+import { fileURLToPath } from "url"
 import { defineConfig } from "vite"
 
 export default defineConfig({
@@ -15,5 +16,13 @@ export default defineConfig({
             }
         },
         sourcemap: true
+    },
+    resolve: {
+        alias: [
+            {
+                find: "@shared",
+                replacement: fileURLToPath(new URL("./shared", import.meta.url))
+            }
+        ]
     }
 })

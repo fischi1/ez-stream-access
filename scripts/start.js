@@ -4,9 +4,6 @@ import { remote } from "webdriverio"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
-/**
- * start WebDriver session with extension installed
- */
 async function startBrowser() {
     const capabilities = {
         browserName: "chrome",
@@ -15,7 +12,6 @@ async function startBrowser() {
         }
     }
     const browser = await remote({
-        // logLevel: 'error',
         capabilities
     })
 

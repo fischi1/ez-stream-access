@@ -1,7 +1,7 @@
+import { ClickData } from "@shared/types/Message"
+import { Quality } from "@shared/types/State"
 import browser from "webextension-polyfill"
 import { Context } from ".."
-import { ClickData } from "../../shared/types/Message"
-import { Quality } from "../../shared/types/State"
 
 const popupUrl = (channel: string, quality: Quality) =>
     `https://player.twitch.tv/?channel=${channel}&enableExtensions=true&muted=false&parent=twitch.tv&player=popout&quality=${quality}&volume=1`

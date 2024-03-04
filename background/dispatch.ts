@@ -1,6 +1,6 @@
+import { Message } from "@shared/types/Message"
+import { StatusError } from "@shared/types/StatusError"
 import { Context, resetContext } from "."
-import { Message } from "../shared/types/Message"
-import { StatusError } from "../shared/types/StatusError"
 import handleClick from "./actions/clickHandling"
 import { changeQuality } from "./actions/controls"
 import {

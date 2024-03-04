@@ -1,7 +1,7 @@
+import { Message } from "@shared/types/Message"
 import { useEffect } from "react"
 import { ToastContainer, toast } from "react-toastify"
 import browser from "webextension-polyfill"
-import { Message } from "../../../shared/types/Message"
 import { useAppState } from "../../state/StateContext"
 
 type Props = {}

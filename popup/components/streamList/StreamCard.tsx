@@ -1,3 +1,5 @@
+import { Message } from "@shared/types/Message"
+import { Stream } from "@shared/types/State"
 import React from "react"
 import browser from "webextension-polyfill"
 import {
@@ -6,8 +8,6 @@ import {
     popupUrl,
     videosUrl
 } from "../../../background/actions/clickHandling"
-import { Message } from "../../../shared/types/Message"
-import { Stream } from "../../../shared/types/State"
 import { useAppState } from "../../state/StateContext"
 
 type Props = {

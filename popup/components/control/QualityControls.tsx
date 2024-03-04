@@ -1,6 +1,6 @@
+import { Message } from "@shared/types/Message"
+import { Quality, qualities } from "@shared/types/State"
 import browser from "webextension-polyfill"
-import { Message } from "../../../shared/types/Message"
-import { Quality, qualities } from "../../../shared/types/State"
 import { useAppState } from "../../state/StateContext"
 import RadioToggle from "../toggle/RadioToggle"
 

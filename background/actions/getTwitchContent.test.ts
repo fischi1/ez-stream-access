@@ -1,7 +1,7 @@
 import { expect, jest } from "@jest/globals"
+import { State, initialState } from "@shared/types/State"
 import { fn } from "jest-mock"
 import { Context, GetStateFunction, SetStateFunction } from ".."
-import { State, initialState } from "../../shared/types/State"
 import { getStreamsFollowed } from "../api/streamsFollowed"
 import { getUser } from "../api/user"
 import { generateStream } from "../testUtils/generateStream"

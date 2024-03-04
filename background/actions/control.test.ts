@@ -1,6 +1,6 @@
 import { expect } from "@jest/globals"
+import { Quality, State, initialState } from "@shared/types/State"
 import { Context } from ".."
-import { Quality, State, initialState } from "../../shared/types/State"
 import { changeQuality } from "./controls"
 
 describe("changeQuality", () => {

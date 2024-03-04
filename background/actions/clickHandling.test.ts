@@ -1,7 +1,7 @@
 import { expect, it, jest } from "@jest/globals"
+import { Quality, State, Stream, initialState } from "@shared/types/State"
 import { Context } from ".."
 import browser from "../../__mocks__/webextension-polyfill"
-import { Quality, State, Stream, initialState } from "../../shared/types/State"
 import handleClick, {
     channelUrl,
     gameUrl,

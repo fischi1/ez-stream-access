@@ -1,5 +1,5 @@
+import { StatusError } from "@shared/types/StatusError"
 import { CLIENT_ID } from "../clientId"
-import { StatusError } from "../../shared/types/StatusError"
 import fetchWithRetry from "./fetchWithRetry"
 
 export type UserData = {

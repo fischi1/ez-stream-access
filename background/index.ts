@@ -1,5 +1,5 @@
+import { State, initialState } from "@shared/types/State"
 import browser from "webextension-polyfill"
-import { State, initialState } from "../shared/types/State"
 import dispatch, { DispatchFunction } from "./dispatch"
 
 export type SetStateFunction = (stateUpdate: (oldState: State) => State) => void

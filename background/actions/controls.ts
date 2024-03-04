@@ -1,5 +1,5 @@
+import { Quality } from "@shared/types/State"
 import { Context } from ".."
-import { Quality } from "../../shared/types/State"
 
 const changeQuality = async (newQuality: Quality, { setState }: Context) => {
     setState((oldState) => ({
