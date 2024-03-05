@@ -1,16 +1,13 @@
-import { expect, jest } from "@jest/globals"
+import { afterEach, describe, expect, it, vi } from "vitest"
 import { CLIENT_ID } from "../clientId"
 import { generateStream } from "../testUtils/generateStream"
 import fetchWithRetry from "./fetchWithRetry"
 import { StreamsFollowedResponse, getStreamsFollowed } from "./streamsFollowed"
 
-jest.mock("./fetchWithRetry")
-const mockedfetchWithRetry = fetchWithRetry as jest.Mocked<
-    typeof fetchWithRetry
->
+vi.mock("./fetchWithRetry")
 
 afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 })
 
 describe("getStreamsFollowed", () => {
@@ -21,7 +18,7 @@ describe("getStreamsFollowed", () => {
             generateStream("streamer3")
         ]
 
-        mockedfetchWithRetry.mockReturnValue(
+        vi.mocked(fetchWithRetry).mockReturnValue(
             Promise.resolve({
                 ok: true,
                 json: () =>
@@ -38,7 +35,7 @@ describe("getStreamsFollowed", () => {
     })
 
     it("should throw if fetch returns an error", async () => {
-        mockedfetchWithRetry.mockReturnValue(
+        vi.mocked(fetchWithRetry).mockReturnValue(
             Promise.resolve({
                 ok: false,
                 status: 401,
@@ -70,7 +67,7 @@ describe("getStreamsFollowed", () => {
             generateStream("streamer9")
         ]
 
-        mockedfetchWithRetry
+        vi.mocked(fetchWithRetry)
             .mockReturnValueOnce(
                 Promise.resolve({
                     ok: true,
@@ -112,14 +109,14 @@ describe("getStreamsFollowed", () => {
                 "Client-Id": CLIENT_ID
             }
         }
-        expect(mockedfetchWithRetry).toBeCalledTimes(3)
-        expect(mockedfetchWithRetry).toHaveBeenNthCalledWith(
+        expect(fetchWithRetry).toBeCalledTimes(3)
+        expect(fetchWithRetry).toHaveBeenNthCalledWith(
             2,
             expect.stringContaining("points+to+page+2"),
             fetchOptions,
             expect.any(Number)
         )
-        expect(mockedfetchWithRetry).toHaveBeenNthCalledWith(
+        expect(fetchWithRetry).toHaveBeenNthCalledWith(
             3,
             expect.stringContaining("points+to+page+3"),
             fetchOptions,

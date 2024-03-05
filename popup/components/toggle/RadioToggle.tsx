@@ -26,7 +26,7 @@ const RadioToggle = ({
             value={value}
             checked={checked}
             className="w-0 h-0 peer"
-            onClick={onSelect}
+            onChange={onSelect}
             required
         />
         <label

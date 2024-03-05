@@ -1,21 +1,21 @@
-import { expect, jest } from "@jest/globals"
 import { State, initialState } from "@shared/types/State"
-import { fn } from "jest-mock"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { Context, GetStateFunction, SetStateFunction } from ".."
 import browser from "../../__mocks__/webextension-polyfill"
 import { getUser } from "../api/user"
 import { DispatchFunction } from "../dispatch"
 import { startLoginFlow } from "./login"
 
-jest.mock("../api/user")
-const mockedGetUser = getUser as jest.Mocked<typeof getUser>
+vi.mock("../api/user")
 
-jest.mock("./toasts")
+vi.mock("./toasts")
 
-jest.useFakeTimers()
+vi.mock("webextension-polyfill")
+
+vi.useFakeTimers()
 
 beforeEach(() => {
-    mockedGetUser.mockReturnValue(
+    vi.mocked(getUser).mockReturnValue(
         Promise.resolve([
             {
                 id: "12345",
@@ -34,17 +34,22 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 })
 
 describe("getTwitchContent", () => {
     it("should do nothing when logged in", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValueOnce({
-            ...initialState,
-            loggedInState: { status: "LOGGED_IN" }
-        } as State)
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValueOnce({
+                ...initialState,
+                loggedInState: { status: "LOGGED_IN" }
+            } as State)
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
         await startLoginFlow({ getState, setState } as unknown as Context)
 
@@ -52,12 +57,17 @@ describe("getTwitchContent", () => {
     })
 
     it("should do nothing when in progress", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValueOnce({
-            ...initialState,
-            loggedInState: { status: "IN_PROGRESS" }
-        } as State)
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValueOnce({
+                ...initialState,
+                loggedInState: { status: "IN_PROGRESS" }
+            } satisfies State)
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
         await startLoginFlow({ getState, setState } as unknown as Context)
 
@@ -65,10 +75,14 @@ describe("getTwitchContent", () => {
     })
 
     it("should set the status to IN_PROGRESS", async () => {
-        const getState =
-            fn<GetStateFunction>().mockReturnValueOnce(initialState)
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValueOnce(initialState)
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
         await startLoginFlow({ getState, setState } as unknown as Context)
 
@@ -79,14 +93,18 @@ describe("getTwitchContent", () => {
     })
 
     it("should store the access token as part of the state", async () => {
-        const getState =
-            fn<GetStateFunction>().mockReturnValueOnce(initialState)
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValueOnce(initialState)
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
-        const mockLaunchWebAuthFlow = fn<
-            typeof browser.identity.launchWebAuthFlow
-        >().mockImplementation(launchWebAuthFlowTestImpl)
+        const mockLaunchWebAuthFlow = vi
+            .fn<any, ReturnType<typeof browser.identity.launchWebAuthFlow>>()
+            .mockImplementation(launchWebAuthFlowTestImpl)
         browser.identity.launchWebAuthFlow = mockLaunchWebAuthFlow
 
         await startLoginFlow({
@@ -108,16 +126,20 @@ describe("getTwitchContent", () => {
     })
 
     it("should dispatch a fetchStreams action after successful login", async () => {
-        const getState =
-            fn<GetStateFunction>().mockReturnValueOnce(initialState)
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValueOnce(initialState)
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
-        const dispatch = fn<DispatchFunction>()
+        const dispatch = vi.fn<any, ReturnType<DispatchFunction>>()
 
-        const mockLaunchWebAuthFlow = fn<
-            typeof browser.identity.launchWebAuthFlow
-        >().mockImplementation(launchWebAuthFlowTestImpl)
+        const mockLaunchWebAuthFlow = vi
+            .fn<any, ReturnType<typeof browser.identity.launchWebAuthFlow>>()
+            .mockImplementation(launchWebAuthFlowTestImpl)
         browser.identity.launchWebAuthFlow = mockLaunchWebAuthFlow
 
         await startLoginFlow({
@@ -133,16 +155,20 @@ describe("getTwitchContent", () => {
     })
 
     it("should reset the status if an error happens", async () => {
-        const getState =
-            fn<GetStateFunction>().mockReturnValueOnce(initialState)
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValueOnce(initialState)
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
-        const dispatch = fn<DispatchFunction>()
+        const dispatch = vi.fn<any, ReturnType<DispatchFunction>>()
 
-        const mockLaunchWebAuthFlow = fn<
-            typeof browser.identity.launchWebAuthFlow
-        >().mockRejectedValue({ message: "There was an error" })
+        const mockLaunchWebAuthFlow = vi
+            .fn<any, ReturnType<typeof browser.identity.launchWebAuthFlow>>()
+            .mockRejectedValue({ message: "There was an error" })
         browser.identity.launchWebAuthFlow = mockLaunchWebAuthFlow
 
         await startLoginFlow({

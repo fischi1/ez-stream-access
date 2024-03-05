@@ -1,23 +1,18 @@
-import { expect, jest } from "@jest/globals"
 import { State, initialState } from "@shared/types/State"
-import { fn } from "jest-mock"
+import { afterEach, describe, expect, it, vi } from "vitest"
 import { Context, GetStateFunction, SetStateFunction } from ".."
 import { getStreamsFollowed } from "../api/streamsFollowed"
 import { getUser } from "../api/user"
 import { generateStream } from "../testUtils/generateStream"
 import { getTwitchContent, refreshTwitchContent } from "./getTwitchContent"
 
-jest.mock("../api/streamsFollowed")
-const mockedGetStreamsFollowed = getStreamsFollowed as jest.Mocked<
-    typeof getStreamsFollowed
->
+vi.mock("../api/streamsFollowed")
 
-jest.mock("../api/user")
-const mockedGetUser = getUser as jest.Mocked<typeof getUser>
+vi.mock("../api/user")
 
-jest.mock("./toasts")
+vi.mock("./toasts")
 
-jest.useFakeTimers()
+vi.useFakeTimers()
 
 const loggedInState = {
     status: "LOGGED_IN" as "LOGGED_IN",
@@ -29,17 +24,22 @@ const loggedInState = {
 }
 
 afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 })
 
 describe("getTwitchContent", () => {
     it("should do nothing when not logged in", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValueOnce({
-            ...initialState,
-            loggedInState: { status: "NOT_LOGGED_IN" }
-        } as State)
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValueOnce({
+                ...initialState,
+                loggedInState: { status: "NOT_LOGGED_IN" }
+            } as State)
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
         await getTwitchContent({ getState, setState } as unknown as Context)
 
@@ -48,12 +48,17 @@ describe("getTwitchContent", () => {
     })
 
     it("should do nothing when already fetching content", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValueOnce({
-            ...initialState,
-            streamState: { status: "FETCHING" }
-        } as State)
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValueOnce({
+                ...initialState,
+                streamState: { status: "FETCHING" }
+            } as State)
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
         await getTwitchContent({ getState, setState } as unknown as Context)
 
@@ -62,14 +67,19 @@ describe("getTwitchContent", () => {
     })
 
     it("sets status to `FETCHING` while login is in progress", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValue({
-            ...initialState,
-            loggedInState: loggedInState
-        })
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValue({
+                ...initialState,
+                loggedInState: loggedInState
+            })
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
-        mockedGetStreamsFollowed.mockReturnValue(Promise.resolve([]))
+        vi.mocked(getStreamsFollowed).mockReturnValue(Promise.resolve([]))
 
         await getTwitchContent({ getState, setState } as unknown as Context)
 
@@ -80,14 +90,19 @@ describe("getTwitchContent", () => {
     })
 
     it("should map streams to state", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValue({
-            ...initialState,
-            loggedInState: loggedInState
-        })
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValue({
+                ...initialState,
+                loggedInState: loggedInState
+            })
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
-        mockedGetStreamsFollowed.mockReturnValue(
+        vi.mocked(getStreamsFollowed).mockReturnValue(
             Promise.resolve([
                 generateStream("streamer1"),
                 generateStream("streamer2"),
@@ -109,15 +124,20 @@ describe("getTwitchContent", () => {
     })
 
     it("applies profile pictures to streams", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValue({
-            ...initialState,
-            loggedInState: loggedInState
-        })
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValue({
+                ...initialState,
+                loggedInState: loggedInState
+            })
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
-        mockedGetStreamsFollowed.mockReturnValue(Promise.resolve([]))
-        mockedGetUser.mockReturnValue(
+        vi.mocked(getStreamsFollowed).mockReturnValue(Promise.resolve([]))
+        vi.mocked(getUser).mockReturnValue(
             Promise.resolve([
                 {
                     id: "12345",
@@ -162,15 +182,20 @@ describe("getTwitchContent", () => {
     })
 
     it("updates lastFetchTime and sets status back to idle", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValue({
-            ...initialState,
-            loggedInState: loggedInState
-        })
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValue({
+                ...initialState,
+                loggedInState: loggedInState
+            })
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
-        mockedGetStreamsFollowed.mockReturnValue(Promise.resolve([]))
-        jest.setSystemTime(new Date("2024-02-25T10:34:05.011Z"))
+        vi.mocked(getStreamsFollowed).mockReturnValue(Promise.resolve([]))
+        vi.setSystemTime(new Date("2024-02-25T10:34:05.011Z"))
         await getTwitchContent({ getState, setState } as unknown as Context)
 
         const updateStateFunction = setState.mock.calls[2][0]
@@ -183,16 +208,21 @@ describe("getTwitchContent", () => {
     })
 
     it("resets status back to IDLE on error and forward the error", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValue({
-            ...initialState,
-            ...{
-                loggedInState: loggedInState
-            }
-        })
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValue({
+                ...initialState,
+                ...{
+                    loggedInState: loggedInState
+                }
+            })
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
-        mockedGetStreamsFollowed.mockRejectedValue({
+        vi.mocked(getStreamsFollowed).mockRejectedValue({
             statusText: 500,
             status: "Internal Server Error"
         })
@@ -217,20 +247,25 @@ describe("getTwitchContent", () => {
 
 describe("refreshTwitchContent", () => {
     it("should not do updates if data was alread fetched in the last few minutes", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValue({
-            ...initialState,
-            streamState: {
-                lastFetchTime: "2024-02-25T10:33:05.011Z",
-                quality: "480p30",
-                status: "IDLE",
-                streams: []
-            },
-            loggedInState: loggedInState
-        })
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValue({
+                ...initialState,
+                streamState: {
+                    lastFetchTime: "2024-02-25T10:33:05.011Z",
+                    quality: "480p30",
+                    status: "IDLE",
+                    streams: []
+                },
+                loggedInState: loggedInState
+            })
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
-        jest.setSystemTime(new Date("2024-02-25T10:34:05.011Z"))
+        vi.setSystemTime(new Date("2024-02-25T10:34:05.011Z"))
 
         await refreshTwitchContent({ force: false }, {
             getState,
@@ -241,21 +276,26 @@ describe("refreshTwitchContent", () => {
     })
 
     it("should update state if the last fetch time is further than a few minutes in the past", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValue({
-            ...initialState,
-            streamState: {
-                lastFetchTime: "2024-02-25T10:25:05.011Z",
-                quality: "480p30",
-                status: "IDLE",
-                streams: []
-            },
-            loggedInState: loggedInState
-        })
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValue({
+                ...initialState,
+                streamState: {
+                    lastFetchTime: "2024-02-25T10:25:05.011Z",
+                    quality: "480p30",
+                    status: "IDLE",
+                    streams: []
+                },
+                loggedInState: loggedInState
+            })
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
-        mockedGetStreamsFollowed.mockReturnValue(Promise.resolve([]))
-        jest.setSystemTime(new Date("2024-02-25T10:34:05.011Z"))
+        vi.mocked(getStreamsFollowed).mockReturnValue(Promise.resolve([]))
+        vi.setSystemTime(new Date("2024-02-25T10:34:05.011Z"))
 
         await refreshTwitchContent({ force: false }, {
             getState,
@@ -266,21 +306,26 @@ describe("refreshTwitchContent", () => {
     })
 
     it("force=true should override lastFetchtime", async () => {
-        const getState = fn<GetStateFunction>().mockReturnValue({
-            ...initialState,
-            streamState: {
-                lastFetchTime: "2024-02-25T10:34:05.011Z",
-                quality: "480p30",
-                status: "IDLE",
-                streams: []
-            },
-            loggedInState: loggedInState
-        })
+        const getState = vi
+            .fn<any, ReturnType<GetStateFunction>>()
+            .mockReturnValue({
+                ...initialState,
+                streamState: {
+                    lastFetchTime: "2024-02-25T10:34:05.011Z",
+                    quality: "480p30",
+                    status: "IDLE",
+                    streams: []
+                },
+                loggedInState: loggedInState
+            })
 
-        const setState = fn<SetStateFunction>()
+        const setState = vi.fn<
+            Parameters<SetStateFunction>,
+            ReturnType<SetStateFunction>
+        >()
 
-        mockedGetStreamsFollowed.mockReturnValue(Promise.resolve([]))
-        jest.setSystemTime(new Date("2024-02-25T10:34:05.011Z"))
+        vi.mocked(getStreamsFollowed).mockReturnValue(Promise.resolve([]))
+        vi.setSystemTime(new Date("2024-02-25T10:34:05.011Z"))
 
         await refreshTwitchContent({ force: true }, {
             getState,

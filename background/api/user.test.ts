@@ -1,21 +1,18 @@
-import { jest, expect } from "@jest/globals"
+import { afterEach, describe, expect, it, vi } from "vitest"
 import fetchWithRetry from "./fetchWithRetry"
 import { UserData, UserResponse, getUser } from "./user"
 
-jest.mock("./fetchWithRetry")
-const mockedfetchWithRetry = fetchWithRetry as jest.Mocked<
-    typeof fetchWithRetry
->
+vi.mock("./fetchWithRetry")
 
 afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 })
 
 describe("getUser", () => {
     it("should return info about the user", async () => {
         const userData = generateUserData("user1")
 
-        mockedfetchWithRetry.mockReturnValue(
+        vi.mocked(fetchWithRetry).mockReturnValue(
             Promise.resolve({
                 ok: true,
                 json: () =>
@@ -27,7 +24,7 @@ describe("getUser", () => {
 
         const user = await getUser("accessToken")
 
-        expect(mockedfetchWithRetry).toBeCalledTimes(1)
+        expect(fetchWithRetry).toBeCalledTimes(1)
         expect(user).toEqual([userData])
     })
 
@@ -38,7 +35,7 @@ describe("getUser", () => {
             generateUserData("user3")
         ]
 
-        mockedfetchWithRetry.mockReturnValue(
+        vi.mocked(fetchWithRetry).mockReturnValue(
             Promise.resolve({
                 ok: true,
                 json: () =>
@@ -53,12 +50,12 @@ describe("getUser", () => {
             userData.map((user) => user.login)
         )
 
-        expect(mockedfetchWithRetry).toBeCalledTimes(1)
+        expect(fetchWithRetry).toBeCalledTimes(1)
         expect(users).toEqual(userData)
     })
 
     it("should throw if fetch returns an error", async () => {
-        mockedfetchWithRetry.mockReturnValue(
+        vi.mocked(fetchWithRetry).mockReturnValue(
             Promise.resolve({
                 ok: false,
                 status: 401,
@@ -74,7 +71,7 @@ describe("getUser", () => {
     })
 
     it("should throw if fetch returns an for multiple users", async () => {
-        mockedfetchWithRetry.mockReturnValue(
+        vi.mocked(fetchWithRetry).mockReturnValue(
             Promise.resolve({
                 ok: false,
                 status: 401,
@@ -94,7 +91,7 @@ describe("getUser", () => {
             generateUserData(`user${index}`)
         )
 
-        mockedfetchWithRetry.mockImplementation(
+        vi.mocked(fetchWithRetry).mockImplementation(
             (url) =>
                 Promise.resolve({
                     ok: true,
@@ -110,7 +107,7 @@ describe("getUser", () => {
             userData.map((user) => user.login)
         )
 
-        expect(mockedfetchWithRetry).toBeCalledTimes(5)
+        expect(fetchWithRetry).toBeCalledTimes(5)
         expect(users.map((user) => user.login)).toEqual(
             userData.map((user) => user.login)
         )
@@ -121,7 +118,7 @@ describe("getUser", () => {
             generateUserData(`user${index}`)
         )
 
-        mockedfetchWithRetry.mockImplementation(
+        vi.mocked(fetchWithRetry).mockImplementation(
             (url) =>
                 Promise.resolve({
                     ok: true,
@@ -137,7 +134,7 @@ describe("getUser", () => {
             userData.map((user) => user.login)
         )
 
-        expect(mockedfetchWithRetry).toBeCalledTimes(2)
+        expect(fetchWithRetry).toBeCalledTimes(2)
         expect(users).toEqual(userData)
     })
 })

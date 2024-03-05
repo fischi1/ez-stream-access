@@ -1,5 +1,5 @@
-import { expect, it, jest } from "@jest/globals"
 import { Quality, State, Stream, initialState } from "@shared/types/State"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { Context } from ".."
 import browser from "../../__mocks__/webextension-polyfill"
 import handleClick, {
@@ -9,10 +9,12 @@ import handleClick, {
     videosUrl
 } from "./clickHandling"
 
+vi.mock("webextension-polyfill")
+
 beforeEach(() => {})
 
 afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 })
 
 const stream: Stream = {
@@ -121,7 +123,7 @@ describe("handleClick", () => {
     })
 
     it("calls the closePopup function after opening handling the click", () => {
-        const closePopupMock = jest.fn()
+        const closePopupMock = vi.fn()
 
         handleClick(
             {
@@ -148,7 +150,7 @@ describe("handleClick", () => {
     })
 
     it("logs an error if the login doesn't exist", () => {
-        const consoleSpy = jest.spyOn(console, "error")
+        const consoleSpy = vi.spyOn(console, "error")
 
         handleClick(
             {

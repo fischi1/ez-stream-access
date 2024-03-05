@@ -1,20 +1,19 @@
-import { expect, jest } from "@jest/globals"
-import { fn } from "jest-mock"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import fetchWithRetry from "./fetchWithRetry"
 
 beforeEach(() => {
     // @ts-ignore
-    global.setTimeout = fn((callback: () => void) => callback())
+    global.setTimeout = vi.fn((callback: () => void) => callback())
 })
 
 afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 })
 
 describe("fetchWithRetry", () => {
     it("should work like a normal fetch", async () => {
         // @ts-ignore
-        global.fetch = fn(() =>
+        global.fetch = vi.fn(() =>
             Promise.resolve({
                 json: () => Promise.resolve({ hello: "world" })
             })
@@ -35,7 +34,8 @@ describe("fetchWithRetry", () => {
 
     it("should retry the call on 429", async () => {
         // @ts-ignore
-        global.fetch = fn()
+        global.fetch = vi
+            .fn()
             .mockReturnValueOnce(Promise.resolve({ status: 429 }))
             .mockReturnValueOnce(Promise.resolve({ status: 429 }))
             .mockReturnValueOnce(Promise.resolve({ status: 429 }))
@@ -61,7 +61,8 @@ describe("fetchWithRetry", () => {
 
     it("return 429 if max retries are reached", async () => {
         // @ts-ignore
-        global.fetch = fn()
+        global.fetch = vi
+            .fn()
             .mockReturnValueOnce(Promise.resolve({ status: 429 }))
             .mockReturnValueOnce(Promise.resolve({ status: 429 }))
             .mockReturnValueOnce(Promise.resolve({ status: 429 }))
@@ -80,9 +81,9 @@ describe("fetchWithRetry", () => {
 
     it("should return other status immedieately", async () => {
         // @ts-ignore
-        global.fetch = fn().mockReturnValueOnce(
-            Promise.resolve({ status: 401 })
-        )
+        global.fetch = vi
+            .fn()
+            .mockReturnValueOnce(Promise.resolve({ status: 401 }))
 
         const response = await fetchWithRetry(
             "http://super-secret-api.com",

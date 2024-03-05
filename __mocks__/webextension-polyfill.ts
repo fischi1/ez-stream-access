@@ -1,12 +1,12 @@
-import { fn } from "jest-mock"
+import { vi } from "vitest"
 
 const browser = {
-    storage: { local: { get: fn(() => Promise.resolve()) } },
+    storage: { local: { get: vi.fn(() => Promise.resolve()) } },
     runtime: {
         onMessage: { addListener: () => {} },
         onConnect: { addListener: () => {} }
     },
-    tabs: { update: fn(), create: fn() },
+    tabs: { update: vi.fn(), create: vi.fn() },
     identity: {
         getRedirectURL: () => "https://chrome-redirect.com/",
         launchWebAuthFlow: (_: { url: string }) => Promise.resolve("")
