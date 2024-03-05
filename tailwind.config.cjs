@@ -22,6 +22,9 @@ module.exports = {
             zIndex: {
                 clickAwayListener: "999999",
                 clickAwayElement: `${999999 + 1}`
+            },
+            fontSize: {
+                xxs: "0.65rem"
             }
         }
     }

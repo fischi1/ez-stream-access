@@ -24,5 +24,8 @@ export default defineConfig({
                 replacement: fileURLToPath(new URL("./shared", import.meta.url))
             }
         ]
+    },
+    define: {
+        APP_VERSION: JSON.stringify(process.env.npm_package_version)
     }
 })

@@ -42,7 +42,7 @@ const Menu = ({}: Props) => {
             <ClickAwayOverlay enabled={open} onClick={() => setOpen(false)}>
                 <div
                     className={clsx(
-                        "bg-menu rounded-md border border-darkBorder absolute top-[65px] right-[10px] w-[250px] p-3 justify-between z-clickAwayElement",
+                        "bg-menu rounded-md border border-darkBorder absolute top-[65px] right-[10px] w-[250px] p-4 justify-between z-clickAwayElement",
                         open ? "flex" : "hidden"
                     )}
                 >
@@ -53,6 +53,9 @@ const Menu = ({}: Props) => {
                     </p>
                     <div>
                         <Button onClick={handleLogoutClick}>Logout</Button>
+                    </div>
+                    <div className="absolute bottom-[-2px] right-[1px] text-xxs text-lightBackground">
+                        {APP_VERSION}
                     </div>
                 </div>
             </ClickAwayOverlay>
