@@ -4,7 +4,8 @@ const browser = {
     storage: { local: { get: vi.fn(() => Promise.resolve()) } },
     runtime: {
         onMessage: { addListener: () => {} },
-        onConnect: { addListener: () => {} }
+        onConnect: { addListener: () => {} },
+        sendMessage: vi.fn()
     },
     tabs: { update: vi.fn(), create: vi.fn() },
     identity: {

@@ -30,6 +30,7 @@ const QualityControls = ({}: Props) => {
                     {qualities[key as Quality]}
                 </RadioToggle>
             ))}
+            <div>{streamState.quality}</div>
         </fieldset>
     )
 }
