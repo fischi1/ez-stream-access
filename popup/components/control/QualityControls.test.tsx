@@ -1,5 +1,11 @@
 import { initialState, qualities } from "@shared/types/State"
-import { fireEvent, render, screen, waitFor } from "@testing-library/react"
+import {
+    cleanup,
+    fireEvent,
+    render,
+    screen,
+    waitFor
+} from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import browser from "../../../__mocks__/webextension-polyfill"
 import { useAppState } from "../../state/StateContext"
@@ -12,6 +18,7 @@ vi.mock("webextension-polyfill")
 beforeEach(() => {})
 
 afterEach(() => {
+    cleanup()
     vi.clearAllMocks()
 })
 

@@ -1,10 +1,11 @@
-import { render } from "@testing-library/react"
+import { cleanup, render } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import RadioToggle from "./RadioToggle"
 
 beforeEach(() => {})
 
 afterEach(() => {
+    cleanup()
     vi.clearAllMocks()
 })
 
