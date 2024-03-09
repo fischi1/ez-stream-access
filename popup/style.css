@@ -11,6 +11,7 @@
 
     ::-webkit-scrollbar {
         width: var(--scrollbar-width);
+        height: 0px;
     }
 
     ::-webkit-scrollbar-track {
@@ -26,6 +27,12 @@
 
     body {
         width: calc(800px - var(--scrollbar-width));
+        max-width: 100%;
+    }
+
+    html {
+        overflow-x: hidden;
+        background: theme(colors.background);
     }
 
     html *:not(svg, path) {

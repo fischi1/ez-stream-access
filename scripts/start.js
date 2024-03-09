@@ -10,7 +10,13 @@ async function startBrowser() {
         "goog:chromeOptions": {
             args: [`--load-extension=${path.join(__dirname, "..", "dist")}`]
         }
+        // uncomment if you want to use edge
+        // browserName: "edge",
+        // "ms:edgeOptions": {
+        //     args: [`--load-extension=${path.join(__dirname, "..", "dist")}`]
+        // }
     }
+    
     const browser = await remote({
         capabilities
     })
