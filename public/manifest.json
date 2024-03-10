@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "EZ Stream Access",
   "author": "mail@lukasfischer.me",
-  "description": "Open your followed twitch channels directly from a popup",
+  "description": "Open your followed Twitch channels directly from a popup",
   "homepage_url": "https://github.com/fischi1/ez-stream-access",
   "version": "0.0.0",
   "background": {

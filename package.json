@@ -1,7 +1,7 @@
 {
   "name": "ez-stream-access",
   "version": "1.0.0",
-  "description": "Open your followed twitch channels directly from a popup",
+  "description": "Open your followed Twitch channels directly from a popup",
   "author": "Lukas Fischer <mail@lukasfischer.me>",
   "license": "MIT",
   "type": "module",
